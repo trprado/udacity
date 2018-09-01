@@ -275,6 +275,8 @@ def mean(data_list):
 def median(data_list): # Função baseada no que estudei no Livro Data Science do Zero
     """ Calcula a mediana dos valores de uma lista.
     Por meio de uma lista se encontra os pontos médios e retorna a mediana da lista.
+    Baseado no que aprendi no Livro **Data Science do Zero: Primeiras Regras com o 
+    Python**, *Alta Book*, Joel Grus 2016.
 
     :param data_list: Lista com os valores a serem calculados.
 
@@ -287,8 +289,8 @@ def median(data_list): # Função baseada no que estudei no Livro Data Science d
     if n % 2 == 1: # odd
         val = float(sorted_list[mid])
     else: # even
-        low = float(sorted_list[mid-1])
         hi = float(sorted_list[mid])
+        low = float(sorted_list[mid-1])
         val = (hi+low) / 2
     return val
 
