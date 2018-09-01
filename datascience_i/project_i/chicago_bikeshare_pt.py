@@ -1,6 +1,9 @@
 # coding: utf-8
 """ A documentação se encontra no padrão reStructuredText, preferi utilizar essa forma
-pois é a que encontrei como mais simples para ver e distinguir os parâmetros e retornos. """
+pois é a que encontrei como mais simples para ver e distinguir os parâmetros e retornos.
+
+Github: `Thiago Udacity Fundamentos de DataScience I - Projeto I <https://github.com/trprado/udacity/tree/master/datascience_i/project_i> 
+"""
 
 # Começando com os imports
 import csv
