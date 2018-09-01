@@ -1,0 +1,5 @@
+{
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.pythonPath": "/home/trprado/.local/share/virtualenvs/udacity-WaEjM5--/bin/python"
+}
