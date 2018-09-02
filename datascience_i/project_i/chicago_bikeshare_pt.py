@@ -49,8 +49,8 @@ input("Aperte Enter para continuar...")
 
 print("\nTAREFA 2: Imprimindo o gênero das primeiras 20 amostras")
 
-for index in range(20): # Impressão das 20 primeiras amostras de sexo por linhas
-    print(data_list[index][6])
+for i, line in enumerate(data_list[:20], start=1): # Impressão das 20 primeiras amostras de sexo por linhas (com melhorias sugeridas pela revisão do time udacity-br).
+    print(f"Line : {i}\tGender: {line[-2]}")
 
 # Ótimo! Nós podemos pegar as linhas(samples) iterando com um for, e as colunas(features) por índices.
 # Mas ainda é difícil pegar uma coluna em uma lista. Exemplo: Lista com todos os gêneros
@@ -152,10 +152,10 @@ def most_popular_gender(data_list):
     :returns: String contendo o gênero de maior presença (*Masculino* ou *Feminino*) ou *Igual* em caso de de mesma quantidade em ambos.
     """
     answer = ""
-    genders = count_gender(data_list)
-    if genders[0] > genders[1]:
+    male,female = count_gender(data_list) # Sujestão de melhoria do time da udacity-br (trocar uma variável ``genders`` por ``male,female``).
+    if male > female:
         answer = 'Masculino'
-    elif genders[0] < genders[1]:
+    elif male < female:
         answer = 'Feminino'
     else:
         answer = 'Igual'
@@ -232,10 +232,12 @@ input("Aperte Enter para continuar...")
 # TODO: Ache a duração de viagem Mínima, Máxima, Média, e Mediana.
 # Você não deve usar funções prontas parTODO isso, como max() e min().
 trip_duration_list = column_to_list(data_list, 2)
-min_trip = 0.
-max_trip = 0.
-mean_trip = 0.
-median_trip = 0.
+
+# remoção das variáveis que a udacity já deixou pronta. (Sujestão de remover do time de revisão udacity-br).
+# min_trip = 0.
+# max_trip = 0.
+# mean_trip = 0.
+# median_trip = 0.
 
 def my_min(data_list):
     """ Retorna o valor mínimo
@@ -314,11 +316,8 @@ input("Aperte Enter para continuar...")
 # Gênero é fácil porque nós temos apenas algumas opções. E quanto a start_stations? Quantas opções ele tem?
 # TODO: Verifique quantos tipos de start_stations nós temos, usando set()
 start_station_list = column_to_list(data_list, 3)
-user_types = set(item for item in start_station_list)   # Genexp para gerar de forma direta o set de com as estações de início.
-                                                        # Como set() é um conjunto, caso um valor repetido seja adicionado, ele apenas
-                                                        # ignora esse valor.
-                                                        # o nome da variável é estranho por que diz tipo de usuário e não estações
-                                                        # de início. Mantive o que já estava como padrão do exercício.
+user_types = set(start_station_list)    # Adição direta da lista para set, convertendo e criando um conjunto de estações iniciais. (Sujestão time de revisão udacity-br).
+                                        # Não sabia que iria converter direto, então usei Genexp para criar o set.
 
 print("\nTAREFA 10: Imprimindo as start stations:")
 print(len(user_types))
