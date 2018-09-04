@@ -8,12 +8,13 @@ Github: `Thiago Udacity Fundamentos de DataScience I - Projeto I <https://github
 # Começando com os imports
 import csv
 import matplotlib.pyplot as plt
+from typing import List, Set, Tuple
 
 # Vamos ler os dados como uma lista
 print("Lendo o documento...")
 with open("chicago.csv", "r") as file_read:
     reader = csv.reader(file_read)
-    data_list = list(reader)
+    data_list:List[List[str]] = list(reader)
 print("Ok!")
 
 # Vamos verificar quantas linhas nós temos
@@ -58,7 +59,7 @@ for i, line in enumerate(data_list[:20], start=1): # Impressão das 20 primeiras
 input("Aperte Enter para continuar...")
 # TAREFA 3
 # TODO: Crie uma função para adicionar as colunas(features) de uma lista em outra lista, na mesma ordem
-def column_to_list(data, index):
+def column_to_list(data:List[List[str]], index:int) -> List[str]:
     """ Transforma uma colunas em uma lista.
     A partir de uma lista de listas e de um índice de coluna, gera uma nova lista com o conteúdo da coluna requisitado.
 
@@ -67,7 +68,7 @@ def column_to_list(data, index):
 
     :returns: Lista da coluna informada.
     """
-    column_list = [item[index] for item in data] # usando listcomp para gerar a lista
+    column_list:List[str] = [item[index] for item in data] # usando listcomp para gerar a lista
     # Dica: Você pode usar um for para iterar sobre as amostras, pegar a feature pelo seu índice, e dar append para uma lista
     return column_list
 
@@ -86,8 +87,8 @@ input("Aperte Enter para continuar...")
 # Agora sabemos como acessar as features, vamos contar quantos Male (Masculinos) e Female (Femininos) o dataset tem
 # TAREFA 4
 # TODO: Conte cada gênero. Você não deveria usar uma função parTODO isso.
-male = 0
-female = 0
+male:int = 0
+female:int = 0
 
 # O que seria parTodo? (erro na tradução?).
 for i in data_list: # Calcula a quantidade de homens e mulheres que estão definidos na lista.
@@ -109,7 +110,7 @@ input("Aperte Enter para continuar...")
 # TAREFA 5
 # TODO: Crie uma função para contar os gêneros. Retorne uma lista.
 # Isso deveria retornar uma lista com [count_male, count_female] (exemplo: [10, 15] significa 10 Masculinos, 15 Femininos)
-def count_gender(data_list):
+def count_gender(data_list:List[List[str]]) -> List[int]:
     """ Conta quantidades de cada gênero.
     Por meio da lista de lista, calcula a quantidade de representantes de cada gênero.
 
@@ -118,8 +119,8 @@ def count_gender(data_list):
     :param data_list: Lista de listas contendo todos os dados carregados do csv.
     :returns: Lista de dois elementos contendo o número de representantes de cada gênero.
     """
-    male = 0 
-    female = 0
+    male:int = 0 
+    female:int = 0
     for item in data_list:
         if item[-2] == 'Male':
             male += 1
@@ -142,7 +143,7 @@ input("Aperte Enter para continuar...")
 # TAREFA 6
 # TODO: Crie uma função que pegue o gênero mais popular, e retorne este gênero como uma string.
 # Esperamos ver "Masculino", "Feminino", ou "Igual" como resposta.
-def most_popular_gender(data_list):
+def most_popular_gender(data_list:List[List[str]]) -> str:
     """ Retorna o gênero de maior presença na lista.
     Por meio do csv de lista de listas verifica o gênero de maior presença e retorna seu nome, em caso de igualdade retorna em ambos são iguais.
 
@@ -151,7 +152,9 @@ def most_popular_gender(data_list):
     :param data_list: Lista de listas contendo o csv com o gênero.
     :returns: String contendo o gênero de maior presença (*Masculino* ou *Feminino*) ou *Igual* em caso de de mesma quantidade em ambos.
     """
-    answer = ""
+    answer:str = ""
+    male:int # pep-0526 - não é possível usar typing direto no unpack, deve ser gerada as variáveis com as anotações de tipo antes.
+    female:int
     male,female = count_gender(data_list) # Sujestão de melhoria do time da udacity-br (trocar uma variável ``genders`` por ``male,female``).
     if male > female:
         answer = 'Masculino'
@@ -171,10 +174,10 @@ assert most_popular_gender(data_list) == "Masculino", "TAREFA 6: Resultado de re
 # -----------------------------------------------------
 
 # Se tudo está rodando como esperado, verifique este gráfico!
-gender_list = column_to_list(data_list, -2)
-types = ["Male", "Female"]
-quantity = count_gender(data_list)
-y_pos = list(range(len(types)))
+gender_list:List[str] = column_to_list(data_list, -2)
+types:List[str] = ["Male", "Female"]
+quantity:List[int] = count_gender(data_list)
+y_pos:List[int] = list(range(len(types)))
 plt.bar(y_pos, quantity)
 plt.ylabel('Quantidade')
 plt.xlabel('Gênero')
@@ -186,15 +189,15 @@ input("Aperte Enter para continuar...")
 # TAREFA 7
 # TODO: Crie um gráfico similar para user_types. Tenha certeza que a legenda está correta.
 print("\nTAREFA 7: Verifique o gráfico!")
-def count_user_type(user_type_list):
+def count_user_type(user_type_list:List[str]) -> List[int]:
     """ Calcula a quantidade de Clientes e Assinantes.
     Por meio de uma lista calcula a quantidade de clientes "Customer" e assinantes "Subscriber".
 
     :param data_list: Lista contendo os tipos de usuário.
     :returns: Lista de dois parâmetros contendo a quantidade de clientes e assinantes.
     """
-    customer = 0
-    subscriber = 0
+    customer:int = 0
+    subscriber:int = 0
     for user in user_type_list:
         if user == 'Customer':
             customer += 1
@@ -202,10 +205,10 @@ def count_user_type(user_type_list):
             subscriber += 1
     return [customer, subscriber]
 
-user_type_list = column_to_list(data_list, -3)
-types = ['Customer', 'Subscriber']
-quantity = count_user_type(user_type_list)
-y_pos = list(range(len(types)))
+user_type_list:List[str] = column_to_list(data_list, -3)
+types:List[str] = ['Customer', 'Subscriber']
+quantity:List[int] = count_user_type(user_type_list)
+y_pos:List[int] = list(range(len(types)))
 plt.bar(y_pos, quantity)
 plt.ylabel('Quantity')
 plt.xlabel('User Type')
@@ -239,7 +242,7 @@ trip_duration_list = column_to_list(data_list, 2)
 # mean_trip = 0.
 # median_trip = 0.
 
-def my_min(data_list):
+def my_min(data_list:List[str]) -> int:
     """ Retorna o valor mínimo
     Função que emula o funcionamento da função built-in ``min()`` retornando o menor valor da lista.
 
@@ -249,7 +252,7 @@ def my_min(data_list):
     """
     return int(sorted(data_list, key=int)[0])
 
-def my_max(data_list):
+def my_max(data_list:List[str]) -> int:
     """ Retorna o valor máximo
     Função que emula o funcionamento da função built-in ``max()`` retornando o maior valor da lista.
 
@@ -259,7 +262,7 @@ def my_max(data_list):
     """
     return int(sorted(data_list, key=int)[-1])
 
-def mean(data_list):
+def mean(data_list:List[str]) -> float:
     """ Calcula a média dos valores da lista.
     Por meio de uma lista, calcula a soma de seus valores e divide pelo número de itens somados para se obter a média.
 
@@ -267,14 +270,14 @@ def mean(data_list):
 
     :returns: Inteiro que representa a média dos valores da lista.
     """
-    time_sum = 0
+    time_sum:int = 0
     for val in data_list:
         time_sum += int(val)
     return round(time_sum / len(data_list)) # Arredonda para cima ou para baixo (como o valor não é exato e o exercicio parece usar um valor exatado)
                                             # foi utilizada a função built-in round para arredondamento correto, visto que caso fosse dividido utilizando
                                             # o operador '//' seu arredondamente é sempre para baixo "floored quotient".
 
-def median(data_list): # Função baseada no que estudei no Livro Data Science do Zero
+def median(data_list:List[str]) -> float: # Função baseada no que estudei no Livro Data Science do Zero
     """ Calcula a mediana dos valores de uma lista.
     Por meio de uma lista se encontra os pontos médios e retorna a mediana da lista.
     Baseado no que aprendi no Livro **Data Science do Zero: Primeiras Regras com o 
@@ -284,22 +287,22 @@ def median(data_list): # Função baseada no que estudei no Livro Data Science d
 
     :returns: Inteiro contendo o valor no ponto médio em caso de tamanho ímpar, ou a média dos pontos médios em caso de lista com tamanho par.
     """
-    sorted_list = sorted(data_list, key=int)
-    n = len(data_list)
-    mid = n // 2
+    sorted_list:List[str] = sorted(data_list, key=int)
+    n:int = len(data_list)
+    mid:int = n // 2
 
     if n % 2 == 1: # odd
-        val = float(sorted_list[mid])
+        val:float = float(sorted_list[mid])
     else: # even
-        hi = float(sorted_list[mid])
-        low = float(sorted_list[mid-1])
-        val = (hi+low) / 2
+        hi:float = float(sorted_list[mid])
+        low:float = float(sorted_list[mid-1])
+        val:float = (hi+low) / 2
     return val
 
-min_trip = my_min(trip_duration_list)
-max_trip = my_max(trip_duration_list)
-mean_trip = mean(trip_duration_list)
-median_trip = median(trip_duration_list)
+min_trip:int = my_min(trip_duration_list)
+max_trip:int = my_max(trip_duration_list)
+mean_trip:float = mean(trip_duration_list)
+median_trip:float = median(trip_duration_list)
 
 print("\nTAREFA 9: Imprimindo o mínimo, máximo, média, e mediana")
 print("Min: ", min_trip, "Max: ", max_trip, "Média: ", mean_trip, "Mediana: ", median_trip)
@@ -315,8 +318,8 @@ input("Aperte Enter para continuar...")
 # TAREFA 10
 # Gênero é fácil porque nós temos apenas algumas opções. E quanto a start_stations? Quantas opções ele tem?
 # TODO: Verifique quantos tipos de start_stations nós temos, usando set()
-start_station_list = column_to_list(data_list, 3)
-user_types = set(start_station_list)    # Adição direta da lista para set, convertendo e criando um conjunto de estações iniciais. (Sujestão time de revisão udacity-br).
+start_station_list:List[str] = column_to_list(data_list, 3)
+user_types:Set[str] = set(start_station_list)    # Adição direta da lista para set, convertendo e criando um conjunto de estações iniciais. (Sujestão time de revisão udacity-br).
                                         # Não sabia que iria converter direto, então usei Genexp para criar o set.
 
 print("\nTAREFA 10: Imprimindo as start stations:")
@@ -348,7 +351,7 @@ input("Aperte Enter para continuar...")
 print("Você vai encarar o desafio? (yes ou no)")
 answer = "yes"
 
-def count_items(column_list):
+def count_items(column_list:List[str]) -> Tuple[str,int]:
     """ Calcula a quantidade de itens diferentes em uma coluna
     Através de uma lista que represente uma coluna, calcula a quantidade de cada tipo de item existente retornando uma tupla de
     duas listas com os itens em ordem de encontro e suas quantidades.
@@ -359,8 +362,8 @@ def count_items(column_list):
     :param column_list: Lista contendo a coluna com os valores que se deseja contar.
     :returns: Tupla de duas listas com a primeira contendo os itens achados em ordem, e a segunda a contagem de cada item na mesma ordem.
     """
-    item_types = []
-    count_items = []
+    item_types:List[str] = []
+    count_items:List[int] = []
     for item in column_list:
         if item in item_types:
             count_items[item_types.index(item)] += 1

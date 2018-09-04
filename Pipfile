@@ -7,15 +7,16 @@ name = "pypi"
 numpy = "*"
 scipy = "*"
 matplotlib = "*"
-ipython = "*"
 jupyter = "*"
 pandas = "*"
 sympy = "*"
 nose = "*"
 seaborn = "*"
+notebook = "*"
 
 [dev-packages]
 pylint = "<2.0.0"
+ipython = "*"
 
 [requires]
 python_version = "3.6"
