@@ -1,0 +1,14 @@
+passenger_class,age_category,survived
+1,Adolescente,11
+1,Adulto,108
+1,Criança,3
+1,Desconhecido,14
+2,Adolescente,6
+2,Adulto,60
+2,Criança,17
+2,Desconhecido,4
+3,Adolescente,13
+3,Adulto,52
+3,Criança,20
+3,Desconhecido,34
+-,-,342

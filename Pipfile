@@ -17,6 +17,7 @@ notebook = "*"
 [dev-packages]
 pylint = "<2.0.0"
 ipython = "*"
+rope = "*"
 
 [requires]
 python_version = "3.6"
