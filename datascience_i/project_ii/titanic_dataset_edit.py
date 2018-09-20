@@ -29,7 +29,37 @@ df_titanic.rename(columns={'Pclass':'Passenger Class'}, inplace=True)
 df_titanic.rename(
     columns=lambda x: x.strip().lower().replace(' ', '_'), inplace=True)
 
-# df_titanic.columns
+df_titanic.columns
+
+# Contagem de valores nulos na idade da primeira classe.
+print('Pessoas da primeira classe sem idade definida: {}'
+    .format(df_titanic.query(
+    'passenger_class == 1')['age'].isnull().sum()))
+df_mean_firstclass_age = df_titanic.query(
+    'passenger_class == 1')['age'].dropna().mean()
+# print(df_mean_firstclass_age)
+df_titanic['age'].fillna(df_mean_firstclass_age, inplace=True)
+# print(df_titanic.query('passenger_class == 1')['age'].isnull().sum())
+
+# Contagem de valores nulos na idade da segunda classe.
+print('Pessoas da segunda classe sem idade definida: {}'
+    .format(df_titanic.query(
+    'passenger_class == 2')['age'].isnull().sum()))
+# df_mean_second_age = df_titanic.query(
+# 'passenger_class == 2')['age'].dropna().mean()
+# print(df_mean_second_age)
+# df_titanic['age'].fillna(df_mean_second_age, inplace=True)
+# print(df_titanic.query('passenger_class == 2')['age'].isnull().sum())
+
+# Contagem de valores nulos na idade da terceira classe.
+print('Pessoas da terceira classe sem idade definida: {}'
+    .format(df_titanic.query(
+    'passenger_class == 3')['age'].isnull().sum()))
+# df_mean_third_age = df_titanic.query(
+# 'passenger_class == 3')['age'].dropna().mean()
+# print(df_mean_third_age)
+# df_titanic['age'].fillna(df_mean_third_age, inplace=True)
+# print(df_titanic.query('passenger_class == 3')['age'].isnull().sum())
 
 # Cria nova coluna com categoria de idade.
 # 
@@ -56,35 +86,5 @@ df_titanic_edited.sort_index(inplace=True)
 # letras, não é possível ter uma média.
 # Teria de ser utilizados um modelo de predição para avaliar um valor mais pró-
 # ximo do correto.
-
-# Contagem de valores nulos na idade da primeira classe.
-print('Pessoas da primeira classe sem idade definida: {}'
-    .format(df_titanic_edited.query(
-    'passenger_class == 1')['age'].isnull().sum()))
-df_mean_firstclass_age = df_titanic_edited.query(
-    'passenger_class == 1')['age'].dropna().mean()
-# print(df_mean_firstclass_age)
-df_titanic_edited.fillna(df_mean_firstclass_age, inplace=True)
-# print(df_titanic_edited.query('passenger_class == 1')['age'].isnull().sum())
-
-# Contagem de valores nulos na idade da segunda classe.
-print('Pessoas da segunda classe sem idade definida: {}'
-    .format(df_titanic_edited.query(
-    'passenger_class == 2')['age'].isnull().sum()))
-# df_mean_second_age = df_titanic_edited.query(
-# 'passenger_class == 2')['age'].dropna().mean()
-# print(df_mean_second_age)
-# df_titanic_edited.fillna(df_mean_second_age, inplace=True)
-# print(df_titanic_edited.query('passenger_class == 2')['age'].isnull().sum())
-
-# Contagem de valores nulos na idade da terceira classe.
-print('Pessoas da terceira classe sem idade definida: {}'
-    .format(df_titanic_edited.query(
-    'passenger_class == 3')['age'].isnull().sum()))
-# df_mean_third_age = df_titanic_edited.query(
-# 'passenger_class == 3')['age'].dropna().mean()
-# print(df_mean_third_age)
-# df_titanic_edited.fillna(df_mean_third_age, inplace=True)
-# print(df_titanic_edited.query('passenger_class == 3')['age'].isnull().sum())
 
 df_titanic_edited.to_csv('titanic_edited.csv', index=False)
