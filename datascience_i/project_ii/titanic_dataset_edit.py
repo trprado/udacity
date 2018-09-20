@@ -6,9 +6,12 @@ Data Science I (Udacity).
 """
 df_titanic = pd.read_csv('titanic-data-6.csv')
 
-# print(df_titanic.head(1))
-# print(df_titanic.info())
-# print(df_titanic_novo.nunique())
+print(df_titanic.head(1), '\n')
+# Tipos mantigos:
+# - Idade foi mantida como float devido a possibilidade de calcular a idade de
+# crianças com menos de 1 ano.
+print(df_titanic.info(), '\n')
+print(df_titanic.nunique(), '\n')
 
 # Coluna de id de passageiros removida, pois é igual ao index.
 # Cabines não tem importancia, então estão sendo removidas.
@@ -49,13 +52,39 @@ df_titanic_edited = df_criancas.append(
     [df_adolescente, df_adulto, df_sem_idade])
 df_titanic_edited.sort_index(inplace=True)
 
-# Idade das pessoas esta sendo removido ao fazer o calculo, como não é possível 
-# definir se a pessoa se encontra entre um
-# grupo de idade para realizar a média, foi preferido não colocar a media das 
-# idades a esses indivíduos.
 # Local de embarque esta sendo removido os nulos para calculos, pois como são 
 # letras, não é possível ter uma média.
-# Ambos teriam de ser utilizados modelos de predição para um valor mais próximo 
-# do correto.
+# Teria de ser utilizados um modelo de predição para avaliar um valor mais pró-
+# ximo do correto.
+
+# Contagem de valores nulos na idade da primeira classe.
+print('Pessoas da primeira classe sem idade definida: {}'
+    .format(df_titanic_edited.query(
+    'passenger_class == 1')['age'].isnull().sum()))
+df_mean_firstclass_age = df_titanic_edited.query(
+    'passenger_class == 1')['age'].dropna().mean()
+# print(df_mean_firstclass_age)
+df_titanic_edited.fillna(df_mean_firstclass_age, inplace=True)
+# print(df_titanic_edited.query('passenger_class == 1')['age'].isnull().sum())
+
+# Contagem de valores nulos na idade da segunda classe.
+print('Pessoas da segunda classe sem idade definida: {}'
+    .format(df_titanic_edited.query(
+    'passenger_class == 2')['age'].isnull().sum()))
+# df_mean_second_age = df_titanic_edited.query(
+# 'passenger_class == 2')['age'].dropna().mean()
+# print(df_mean_second_age)
+# df_titanic_edited.fillna(df_mean_second_age, inplace=True)
+# print(df_titanic_edited.query('passenger_class == 2')['age'].isnull().sum())
+
+# Contagem de valores nulos na idade da terceira classe.
+print('Pessoas da terceira classe sem idade definida: {}'
+    .format(df_titanic_edited.query(
+    'passenger_class == 3')['age'].isnull().sum()))
+# df_mean_third_age = df_titanic_edited.query(
+# 'passenger_class == 3')['age'].dropna().mean()
+# print(df_mean_third_age)
+# df_titanic_edited.fillna(df_mean_third_age, inplace=True)
+# print(df_titanic_edited.query('passenger_class == 3')['age'].isnull().sum())
 
 df_titanic_edited.to_csv('titanic_edited.csv', index=False)

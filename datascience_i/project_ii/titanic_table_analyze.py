@@ -5,6 +5,11 @@ import pandas as pd
 oferencido no curso de fundamentos de Data Science I (Udacity).
 """
 
+# Algumas analises não foram feitas devido ao banco de dados ser cortado, onde
+# poderiamos verificar as informação familiares pelas colunas SibSp e Parch, 
+# existem informações de pessoas com acompanhantes mas não existem estes acompa-
+# nhantes no banco de dados.
+
 df_titanic = pd.read_csv('titanic_edited.csv')
 
 # Cabeçalho.
@@ -118,8 +123,8 @@ print('Total de sobreviventes: {}.'.format(
 print('Descritiva do valores de todas as passagens, incluindo outliers:')
 print(df_titanic['fare'].dropna().describe(), '\n')
 
-# Descritiva dos valores de todas as passagens excluindo passagens com
-# valor zero.
+# Descritiva dos valores de todas as passagens excluindo passagens com valor 
+# zero.
 temp = df_titanic.query('fare != 0')
 print('Descritiva dos valores de todas as passagens excluindo passagens com valor zero:')
 print(temp['fare'].dropna().describe(), '\n')
