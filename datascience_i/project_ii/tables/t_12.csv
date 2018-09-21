@@ -1,0 +1,11 @@
+survived,passenger_class,name,sex,age,sibsp,parch,ticket,fare,embarked,age_category,freq
+0,3,"Sage, Master. Thomas Henry",male,38.233440860215055,8,2,CA. 2343,69.55,S,Adulto,7
+0,3,"Sage, Miss. Constance Gladys",female,38.233440860215055,8,2,CA. 2343,69.55,S,Adulto,7
+0,3,"Sage, Mr. Frederick",male,38.233440860215055,8,2,CA. 2343,69.55,S,Adulto,7
+0,3,"Sage, Mr. George John Jr",male,38.233440860215055,8,2,CA. 2343,69.55,S,Adulto,7
+0,3,"Sage, Miss. Stella Anna",female,38.233440860215055,8,2,CA. 2343,69.55,S,Adulto,7
+0,3,"Sage, Mr. Douglas Bullen",male,38.233440860215055,8,2,CA. 2343,69.55,S,Adulto,7
+0,3,"Sage, Miss. Dorothy Edith ""Dolly""",female,38.233440860215055,8,2,CA. 2343,69.55,S,Adulto,7
+0,3,"Andersson, Mr. Anders Johan",male,39.0,1,5,347082,31.275,S,Adulto,7
+0,3,"Andersson, Miss. Ellis Anna Maria",female,2.0,4,2,347082,31.275,S,Criança,7
+0,3,"Andersson, Miss. Ingeborg Constanzia",female,9.0,4,2,347082,31.275,S,Criança,7

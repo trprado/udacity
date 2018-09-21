@@ -141,20 +141,26 @@ print(df_group['name'].count().describe(), '\n')
 # Passagens com maior número de passageiros da primeira classe.
 df_titanic['freq'] = df_titanic.groupby('ticket')['ticket'].transform('count')
 print('Passagens com maior número de passageiros da primeira classe:')
-print(df_titanic.sort_values(by=['freq', 'ticket'], ascending=False).query(
-    'passenger_class == 1').head(10), '\n')
+df_titanic_most_pc = df_titanic.sort_values(by=['freq', 'ticket'], ascending=False).query(
+    'passenger_class == 1').head(10)
+df_titanic_most_pc.to_csv('tables/t_10.csv', index=False)
+print(df_titanic_most_pc, '\n')
 
 # Passagens com maior número de passageiros da segunda classe.
 df_titanic['freq'] = df_titanic.groupby('ticket')['ticket'].transform('count')
 print('Passagens com maior número de passageiros da segunda classe:')
-print(df_titanic.sort_values(by=['freq', 'ticket'], ascending=False).query(
-    'passenger_class == 2').head(10), '\n')
+df_titanic_most_sc = df_titanic.sort_values(by=['freq', 'ticket'], ascending=False).query(
+    'passenger_class == 2').head(10)
+df_titanic_most_sc.to_csv('tables/t_11.csv', index=False)
+print(df_titanic_most_sc, '\n')
 
 # Passagens com maior número de passageiros da terceira classe.
 df_titanic['freq'] = df_titanic.groupby('ticket')['ticket'].transform('count')
 print('Passagens com maior número de passageiros da terceira classe:')
-print(df_titanic.sort_values(by=['freq', 'ticket'], ascending=False).query(
-    'passenger_class == 3').head(10), '\n')
+df_titanic_most_tc = df_titanic.sort_values(by=['freq', 'ticket'], ascending=False).query(
+    'passenger_class == 3').head(10)
+df_titanic_most_tc.to_csv('tables/t_12.csv', index=False)
+print(df_titanic_most_tc, '\n')
 
 # Descritiva da primeira classe.
 df_group_first_class = df_titanic.query(

@@ -23,15 +23,28 @@ Todas as analises aqui presentes são resultados do dataset disponibilizado pelo
 
 ## 1.2. Perguntas Feitas
 
-- Adultos tem uma maior taxa de sobrevivência do que as demais categorias?
-    + Como temos categorias de idade e a chance de um adulto sobreviver normalmente é maior é possível verificar quantos adultos sobreviveram por classe e analisar a diferença das demais categorias que sobreviveram.
+- De que forma é composto o banco de dados. Quais são as classes das variáveis? Existem informações faltantes?
+    + Para o tratamento dos dados e fazer a analise é necessário obter essas informações e saber a existem de valores discrepantes.
 
-- A probabilidade de ser adulto e estar na primeira classe?
+- Quais são as medidas descritivas? Qual é a contagem total para os dois gêneros? Qual é a contagem dos gêneros por classe? Como são distribuídos os passageiros por classe e por categoria de idade? Qual é a idade média dos passageiros por classe? Existem diferenças entre as idades médias dos passageiros por categoria de idade para cada classe?  Existem diferenças entre as categorias de idade? Qual foi o preço médio pago por passagem, por classe e por porto de embarcação?
+    + Essas perguntas são importantes para analisar o perfil dos passageiros. Espera-se que existam diferenças significativas entre as classes, principalmente entre as classes extremas, primeira e terceira. É sabido que o Titanic foi de grande sucesso devido a propaganda luxuosa feita pela mídia e que essa fatídica viagem era a primeira com ele, devido a isso, espera-se que houvessem muitos passageiros da primeira classe embarcados.
+
+- Será que mulheres e crianças possuem a maior taxa de sobrevivência no naufrágio? Por classe, qual foi a diferença de frequência da categoria de idade entre os sobreviventes e qual a relação disso pelo número total de passageiros, por classe e geral?
+    + Como é esperado em acidentes, mulheres e crianças possuem preferencial no momento de fuga. Historicamente, sabe-se que muitos barcos de fuga foram lançados ao mar com pouquíssimas pessoas neles, portanto há interesse em saber se houve alguma diferença no número de sobreviventes entre cada classe e quantas pessoas sobreviveram no geral.
+
+- A quantidade de adulto em cada classe?
     + Com a separação entre as três classes de passageiro e as categorias de idade, é possível investigar qual a probabilidade de se estar em qualquer uma das classes.
+
+- A frequência de pessoas de diversas idades no titanic e sua classe.
 
 - A frequência de adultos em comparação as demais categorias de idade no barco.
     + A possibilidade de que existem mais adultos que as demais categorias é clara, mas e sua frequência em comparação as demais.
 
+- Quais portos tem maior taxa de embarque e quais portos tem as menores taxas.
+    + Agrupando as passagens, seus valores e o local de embarque é possível se ter a media dos portos que tiveram maior e menor taxa de embarque, como também a contagem de passageiros que cada porto recebeu no embarque do titanic.
+
+- Quais classes sociais tem os maiores números de pessoas por passagem.
+    + Um agrupamento das passagens e contagem de nomes que fazem parte pode permitir descobrir quais passagens possuem uma maior quantidade de pessoas.
 
 ## 1.3. Limpeza dos dados
 
@@ -45,11 +58,12 @@ O programa responsável por fazer a limpeza dos dados é o arquivo `titanic_data
 - É contado quantos valores de idade nulos existem por classe de passagem, é feito o calculo da média e aplicada a esses valores em branco para terem uma estimativa da idade;
 - É criada uma nova coluna com a categoria da idade de cada passageiro, sendo: `Crianças` para pessoas com menos de 12 anos, `Adolescente` para pessoas com mais de 12 anos e menos de 18 anos e `Adulto` para todos que tiverem idade maior que 18 anos;
 - Ao final é gerado um novo dataset contendo os registros editados.
+- No programa que gera as tabelas, uma nova coluna temporária foi adiciona representando a frequência de indivíduos em uma passagem.
 
 
 ## 1.4. Analises e Resultados
 
-**Tabela 1** -
+**Tabela 1** -Passageiros por classe social, total de indivíduos por categoria de idade e sobreviventes da categoria.
 | passenger_class | age_category | survived |
 |----------------:|--------------|:--------:|
 | 1               | Adolescente  | 11       |
@@ -123,7 +137,7 @@ No segundo e terceiro gráficos de frequência *Figuras 6 e 7* observam-se assim
 
 ![Gráfico de frequência da terceira classe.](imgs/g13-hist-age-third-class.png)
 
-**tabela 2** -
+**tabela 2** - Passageiros por classe, total de indivíduos por sexo e sobrevivementes da categoria.
 | passenger_class | sex    | total | survived |
 |----------------:|--------|:-----:|:--------:|
 | 1               | female | 94    | 91       |
@@ -139,7 +153,7 @@ A *Tabela 2* mostra que existe mais homens e mulheres na terceira classe, como o
 
 ![Gráfico de contagem de passageiros por classe e gênero.](imgs/g4-count-passengers-class.png)
 
-**Tabela 3** -
+**Tabela 3** - Contagem de passageiros por classe e sobreviventes.
 | passenger_class | total | survived |
 |----------------:|:-----:|:--------:|
 | 1               | 216   | 136      |
@@ -152,7 +166,7 @@ A *Tabela 3* demonstra que a grande maioria, com o dobro de passageiros da prime
 
 ![Contagem de passageiros por classe.](imgs/g5-count-passenger-class.png)
 
-**Tabela 4** -
+**Tabela 4** - Total de indivíduos por gênero e sobreviventes.
 | sex    | total | survived |
 |:-------|:-----:|:--------:|
 | female | 314   | 233      |
@@ -164,21 +178,21 @@ A *Tabela 4* demonstra que os passageiros eram majoritariamente do gênero mascu
 
 ![Contagem de pessoas por gênero.](imgs/g6-count-people-by-gender.png)
 
-**Tabela 5** -
+**Tabela 5** - Contagem de pessoas por categoria de idade e sobreviventes
 | age_category | total | survived |
 |:-------------|:-----:|:--------:|
 | Adolescente  | 70    | 30       |
 | Adulto       | 752   | 272      |
 | Criança      | 69    | 40       |
 
-A grande maioria dos passageiros era da categoria adulta, com a minoria sendo de crianças e adolescentes (*Figura 11*). Os adultos tiveram a maior taxa de morte devido seu maior número, porém mais de 50% dos adolescentes faleceram no naufrágio, no total 57,97% das crianças, 37,52% dos adultos e 42,86% dos adolescentes sobreviveram como pode ser observado na *Tabela 5*.
+A grande maioria dos passageiros era da categoria adulta, com a minoria sendo de crianças e adolescentes (*Figura 11*). Os adultos tiveram a maior taxa de morte devido seu maior número, porém mais de 50% dos adolescentes faleceram no naufrágio, no total 57,97% das crianças, 37,52% dos adultos e 42,86% dos adolescentes sobreviveram como pode ser observado na *Tabela 5*. Assim a maior taxa de sobrevivência não é de adultos e sim de crianças, com quase 58% de sobrevivência.
 
 **Figura 11** - Contagem de pessoas por categoria de idade.
 
 ![Contagem de pessoas por categoria de idade.](imgs/g7-count-pearson-by-age-category.png)
 
 
-**Tabela 6** -
+**Tabela 6** - Descritiva da categoria de idade dos passageiros.
 | age_category | count | mean              | std                | min  | 25%  | 50%  | 75%                | max  |
 |--------------|-------|-------------------|--------------------|------|------|------|--------------------|------|
 | Adolescente  | 70.0  | 16.57857142857143 | 1.4386882972218642 | 13.0 | 16.0 | 17.0 | 18.0               | 18.0 |
@@ -187,7 +201,7 @@ A grande maioria dos passageiros era da categoria adulta, com a minoria sendo de
 
 A *Tabela 6* mostra a descritiva das categorias de idade, No geral, a idade média dos adolescentes é de, aproximadamente, 17 anos (desvio de 1.44), mínimo de 13 anos e máximo de 18 anos; os adultos possuem, aproximadamente, 35 anos (desvio de 10.61), com mínimo de 19 anos e máximo de 80 anos; e as crianças possuem a idade média de, aproximadamente, 5 anos (desvio de 3.39), com mínimo de 0.42 meses e máximo de 12 anos. A *Tabela 7* separa a descritiva das categorias de idade entre as classes de passageiro, por ela é possível verificar que adultos da primeira classe são os mais velhos, com idade media de 40 anos, já adolescentes tem pouca variação na média de idade por classe, assim como na categoria infantil.
 
-**Tabela 7** -
+**Tabela 7** - Descritiva da categoria de idade dos passageiros por classe.
 | age_category | passenger_class | count | mean               | std                | min  | 25%   | 50%                | 75%                | max  |
 |--------------|-----------------|-------|--------------------|--------------------|------|-------|--------------------|--------------------|------|
 | Adolescente  | 1               | 12.0  | 16.666666666666668 | 1.3026778945578592 | 14.0 | 16.0  | 17.0               | 18.0               | 18.0 |
@@ -202,7 +216,7 @@ A *Tabela 6* mostra a descritiva das categorias de idade, No geral, a idade méd
 
 A tabela 7 é uma descritiva dos passageiros agrupada por categoria de idade
 
-**Tabela 8**
+**Tabela 8** - Média de valor da passagem por local de embarque e sua classe.
 | passenger_class | embarked | fare_mean          | total |
 |----------------:|:--------:|--------------------|:------|
 | 1               | C        | 104.71852941176469 | 85    |
@@ -225,9 +239,53 @@ Na *Tabela 8* podemos ver uma separação dos valores médios das passagens em c
 
 ![Gráfico de barra com local de embarque e classe do passageiro.](imgs/g10-bar-embarked-by-class.png)
 
+**Tabela 9** - Passagens com maior número de passageiros da primeira classe.
+| survived | passenger_class | name                                                | sex    | age                | sibsp | parch | ticket   | fare     | embarked | age_category | freq |
+|----------|-----------------|-----------------------------------------------------|--------|--------------------|-------|-------|----------|----------|----------|--------------|------|
+| 1        | 1               | "Bidois, Miss. Rosalie"                             | female | 42.0               | 0     | 0     | PC 17757 | 227.525  | C        | Adulto       | 4    |
+| 0        | 1               | "Robbins, Mr. Victor"                               | male   | 38.233440860215055 | 0     | 0     | PC 17757 | 227.525  | C        | Adulto       | 4    |
+| 1        | 1               | "Astor, Mrs. John Jacob (Madeleine Talmadge Force)" | female | 18.0               | 1     | 0     | PC 17757 | 227.525  | C        | Adolescente  | 4    |
+| 1        | 1               | "Endres, Miss. Caroline Louise"                     | female | 38.0               | 0     | 0     | PC 17757 | 227.525  | C        | Adulto       | 4    |
+| 0        | 1               | "Fortune, Mr. Charles Alexander"                    | male   | 19.0               | 3     | 2     | 19950    | 263.0    | S        | Adulto       | 4    |
+| 1        | 1               | "Fortune, Miss. Mabel Helen"                        | female | 23.0               | 3     | 2     | 19950    | 263.0    | S        | Adulto       | 4    |
+| 1        | 1               | "Fortune, Miss. Alice Elizabeth"                    | female | 24.0               | 3     | 2     | 19950    | 263.0    | S        | Adulto       | 4    |
+| 0        | 1               | "Fortune, Mr. Mark"                                 | male   | 64.0               | 1     | 4     | 19950    | 263.0    | S        | Adulto       | 4    |
+| 1        | 1               | "Fleming, Miss. Margaret"                           | female | 38.233440860215055 | 0     | 0     | 17421    | 110.8833 | C        | Adulto       | 4    |
+| 1        | 1               | "Thayer, Mr. John Borland Jr"                       | male   | 17.0               | 0     | 2     | 17421    | 110.8833 | C        | Adolescente  | 4    |
+
+**Tabela 10** - Passagens com maior número de passageiros da segunda classe.
+| survived | passenger_class | name                                                    | sex    | age  | sibsp | parch | ticket        | fare    | embarked | age_category | freq |
+|----------|-----------------|---------------------------------------------------------|--------|------|-------|-------|---------------|---------|----------|--------------|------|
+| 0        | 2               | "Hood, Mr. Ambrose Jr"                                  | male   | 21.0 | 0     | 0     | S.O.C. 14879  | 73.5    | S        | Adulto       | 5    |
+| 0        | 2               | "Hickman, Mr. Stanley George"                           | male   | 21.0 | 2     | 0     | S.O.C. 14879  | 73.5    | S        | Adulto       | 5    |
+| 0        | 2               | "Davies, Mr. Charles Henry"                             | male   | 18.0 | 0     | 0     | S.O.C. 14879  | 73.5    | S        | Adolescente  | 5    |
+| 0        | 2               | "Hickman, Mr. Leonard Mark"                             | male   | 24.0 | 2     | 0     | S.O.C. 14879  | 73.5    | S        | Adulto       | 5    |
+| 0        | 2               | "Hickman, Mr. Lewis"                                    | male   | 32.0 | 2     | 0     | S.O.C. 14879  | 73.5    | S        | Adulto       | 5    |
+| 1        | 2               | "Laroche, Miss. Simonne Marie Anne Andree"              | female | 3.0  | 1     | 2     | SC/Paris 2123 | 41.5792 | C        | Criança      | 3    |
+| 1        | 2               | "Laroche, Mrs. Joseph (Juliette Marie Louise Lafargue)" | female | 22.0 | 1     | 2     | SC/Paris 2123 | 41.5792 | C        | Adulto       | 3    |
+| 0        | 2               | "Laroche, Mr. Joseph Philippe Lemercier"                | male   | 25.0 | 1     | 2     | SC/Paris 2123 | 41.5792 | C        | Adulto       | 3    |
+| 0        | 2               | "Hart, Mr. Benjamin"                                    | male   | 43.0 | 1     | 1     | F.C.C. 13529  | 26.25   | S        | Adulto       | 3    |
+| 1        | 2               | "Hart, Mrs. Benjamin (Esther Ada Bloomfield)"           | female | 45.0 | 1     | 1     | F.C.C. 13529  | 26.25   | S        | Adulto       | 3    |
+
+**Tabela 11** - Passagens com maior número de passageiros da terceira classe.
+| survived | passenger_class | name                                   | sex    | age                | sibsp | parch | ticket   | fare   | embarked | age_category | freq |
+|----------|-----------------|----------------------------------------|--------|--------------------|-------|-------|----------|--------|----------|--------------|------|
+| 0        | 3               | "Sage, Master. Thomas Henry"           | male   | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
+| 0        | 3               | "Sage, Miss. Constance Gladys"         | female | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
+| 0        | 3               | "Sage, Mr. Frederick"                  | male   | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
+| 0        | 3               | "Sage, Mr. George John Jr"             | male   | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
+| 0        | 3               | "Sage, Miss. Stella Anna"              | female | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
+| 0        | 3               | "Sage, Mr. Douglas Bullen"             | male   | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
+| 0        | 3               | "Sage, Miss. Dorothy Edith ""Dolly"""  | female | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
+| 0        | 3               | "Andersson, Mr. Anders Johan"          | male   | 39.0               | 1     | 5     | 347082   | 31.275 | S        | Adulto       | 7    |
+| 0        | 3               | "Andersson, Miss. Ellis Anna Maria"    | female | 2.0                | 4     | 2     | 347082   | 31.275 | S        | Criança      | 7    |
+| 0        | 3               | "Andersson, Miss. Ingeborg Constanzia" | female | 9.0                | 4     | 2     | 347082   | 31.275 | S        | Criança      | 7    |
+
+As *Tabelas 9 a 11* mostram as passagens com maior número de passageiros por classe. A primeira classe a passagem com o maior número de pessoas tem 4, a grande maioria sobreviveu ao naufrágio. A terceira classe, possuíam mais de um passagem com 7 passageiros sendo que todos faleceram, porém em pesquisas online pelo nome de familia consta que o banco de dados não contem todo o registro da familia Sage, sendo que o total eram de 11 passageiros na mesma passagem.
+
 ## 1.5. Links uteis
 
- - [Change Figure Size](https://stackoverflow.com/questions/31594549/how-do-i-change-the-figure-size-for-a-seaborn-plot/31597278)
+- [Change Figure Size](https://stackoverflow.com/questions/31594549/how-do-i-change-the-figure-size-for-a-seaborn-plot/31597278)
 - [Save Figure in Seaborn](https://stackoverflow.com/questions/33616557/barplot-savefig-returning-an-attributeerror)
 - [Ploting with Seaborn](https://www.kaggle.com/princeashburton/plotting-with-seaborn)
 - [Histograms and Density Plots in Python](https://towardsdatascience.com/histograms-and-density-plots-in-python-f6bda88f5ac0)
@@ -237,3 +295,4 @@ Na *Tabela 8* podemos ver uma separação dos valores médios das passagens em c
 - [Matplotlib Docs](https://matplotlib.org/contents.html)
 - [Pandas Doc](https://pandas.pydata.org/pandas-docs/stable/)
 - [Numpy Docs](https://docs.scipy.org/doc/numpy/)
+- [Encyclopedia Titanica](https://www.encyclopedia-titanica.org/)
