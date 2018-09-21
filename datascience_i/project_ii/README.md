@@ -1,15 +1,5 @@
+
 # 1. Projeto II - Fundamentos Data Science I
-
-<!-- TOC -->
-
-- [1. Projeto II - Fundamentos Data Science I](#1-projeto-ii---fundamentos-data-science-i)
-    - [1.1. Notas](#11-notas)
-    - [1.2. Perguntas Feitas](#12-perguntas-feitas)
-    - [1.3. Limpeza dos dados](#13-limpeza-dos-dados)
-    - [1.4. Analises e Resultados](#14-analises-e-resultados)
-    - [1.5. Links uteis](#15-links-uteis)
-
-<!-- /TOC -->
 
 ## 1.1. Notas
 
@@ -18,8 +8,9 @@ Todas as analises aqui presentes são resultados do dataset disponibilizado pelo
 - O dataset utilizado foi titanic-data-6.csv e sua versão editada titanic_edited.csv
 - As [perguntas feitas](#12-perguntas-feitas) estão na seção seguinte.
 - As informações sobre a limpeza dos dados estão na seção [1.3](#13-limpeza-dos-dados).
-- As análises e resultados finais se encontram na seção [1.4](#14-analises-e-resultados).
-- A ultima seção [1.5](#15-links-uteis) contem links uteis de sites com informações que me ajudaram a completar o projeto.
+- As análises e resultados finais se encontram na seção [1.4](#14-analises).
+- A seção [1.5](#15-conclusoes-e-resultados) contem os resultados e conclusões tiradas a partir do dataset.
+- A ultima seção [1.6](#16-links-uteis) contem links uteis de sites com informações que me ajudaram a completar o projeto.
 
 ## 1.2. Perguntas Feitas
 
@@ -61,228 +52,1937 @@ O programa responsável por fazer a limpeza dos dados é o arquivo `titanic_data
 - No programa que gera as tabelas, uma nova coluna temporária foi adiciona representando a frequência de indivíduos em uma passagem.
 
 
-## 1.4. Analises e Resultados
+```python
+import numpy as np
+import pandas as pd
 
-**Tabela 1** - Passageiros por classe social, total de indivíduos por categoria de idade e sobreviventes da categoria.
-
-| passenger_class | age_category | survived |
-|----------------:|--------------|:--------:|
-| 1               | Adolescente  | 11       |
-| 1               | Adulto       | 122      |
-| 1               | Criança      | 3        |
-| 2               | Adolescente  | 6        |
-| 2               | Adulto       | 64       |
-| 2               | Criança      | 17       |
-| 3               | Adolescente  | 13       |
-| 3               | Adulto       | 86       |
-| 3               | Criança      | 20       |
-| total           | -            | 342      |
-
+""" Transformação do Data Set do Titanic oferencido no curso de fundamentos de
+Data Science I (Udacity).
+"""
+df_titanic = pd.read_csv('titanic-data-6.csv')
 ```
-Total de passageiros por classe:
-Total de pessoas da 1(a) classe no titanic: 216.
-Total de pessoas da 2(a) classe no titanic: 184.
-Total de pessoas da 3(a) classe no titanic: 491.
-Total de sobreviventes: 891.
 
-Porcentagem de sobreviventes por classe:
-Porcentagem de sobreviventes da 1(a) classe: 62.96%.
-Porcentagem de sobreviventes da 2(a) classe: 47.28%.
-Porcentagem de sobreviventes da 3(a) classe: 24.24%.
-Porcentagem de sobreviventes do naufrágio: 38.38%.
 
-Porcentagem por classes de sobreviventes:
-Porcentagem da 1(a) classe: 39.77%.
-Porcentagem da 2(a) classe: 25.44%.
-Porcentagem da 3(a) classe: 34.80%.
-Total de sobreviventes: 342.
+```python
+print(df_titanic.head(1), '\n')
+# Tipos mantigos:
+# - Idade foi mantida como float devido a possibilidade de calcular a idade de
+# crianças com menos de 1 ano.
+print(df_titanic.info(), '\n')
+print(df_titanic.nunique(), '\n')
 ```
+
+       PassengerId  Survived  Pclass                     Name   Sex   Age  SibSp  \
+    0            1         0       3  Braund, Mr. Owen Harris  male  22.0      1
+
+       Parch     Ticket  Fare Cabin Embarked
+    0      0  A/5 21171  7.25   NaN        S
+
+    <class 'pandas.core.frame.DataFrame'>
+    RangeIndex: 891 entries, 0 to 890
+    Data columns (total 12 columns):
+    PassengerId    891 non-null int64
+    Survived       891 non-null int64
+    Pclass         891 non-null int64
+    Name           891 non-null object
+    Sex            891 non-null object
+    Age            714 non-null float64
+    SibSp          891 non-null int64
+    Parch          891 non-null int64
+    Ticket         891 non-null object
+    Fare           891 non-null float64
+    Cabin          204 non-null object
+    Embarked       889 non-null object
+    dtypes: float64(2), int64(5), object(5)
+    memory usage: 83.6+ KB
+    None
+
+    PassengerId    891
+    Survived         2
+    Pclass           3
+    Name           891
+    Sex              2
+    Age             88
+    SibSp            7
+    Parch            7
+    Ticket         681
+    Fare           248
+    Cabin          147
+    Embarked         3
+    dtype: int64
+
+
+
+
+```python
+# Coluna de id de passageiros removida, pois é igual ao index.
+# Cabines não tem importancia, então estão sendo removidas.
+# Nome está sendo mantido apenas para estudo de parentesco, ao se agrupar os
+# tickets retornar
+# o nome das pessoas que possuem mesmo valor, assim é possível estudar se os
+# passageiros tinham
+# relações de parentesco ou possívelmente trabalho.
+df_titanic.drop(columns=['PassengerId', 'Cabin'], inplace=True)
+
+# Renomeia Pclass para Passenger Class.
+df_titanic.rename(columns={'Pclass':'Passenger Class'}, inplace=True)
+
+# Renomeia colunas.
+def rename_cols(df:pd.DataFrame, sep:str='_', lowcase:bool=True):
+    """ Renomeia as colunas em um DataFrame
+    Utilizando de um separador, renomeia as colunas de um DataFrame
+
+    :param df: DataFrame para renomear as colunas.
+    :param sep: String com o caracter de separação das colunas.
+    :param lowcase: Booleano para definir se os nomes devem ficar em minusculo.
+    """
+    if lowcase:
+        df.rename(
+            columns=lambda x: x.strip().lower().replace(' ', sep), inplace=True)
+    else:
+        df.rename(
+            columns=lambda x: x.strip().replace(' ', sep), inplace=True)
+
+
+rename_cols(df_titanic)
+# Verifica se colunas foram alteradas corretamente
+df_titanic.columns
+```
+
+
+
+
+    Index(['survived', 'passenger_class', 'name', 'sex', 'age', 'sibsp', 'parch',
+           'ticket', 'fare', 'embarked'],
+          dtype='object')
+
+
+
+
+```python
+# Contagem de valores nulos na idade da primeira classe.
+print('Pessoas da primeira classe sem idade definida: {}'
+    .format(df_titanic.query(
+    'passenger_class == 1')['age'].isnull().sum()))
+df_mean_firstclass_age = df_titanic.query(
+    'passenger_class == 1')['age'].dropna().mean()
+# print(df_mean_firstclass_age)
+df_titanic['age'].fillna(df_mean_firstclass_age, inplace=True)
+# print(df_titanic.query('passenger_class == 1')['age'].isnull().sum())
+
+# Contagem de valores nulos na idade da segunda classe.
+print('Pessoas da segunda classe sem idade definida: {}'
+    .format(df_titanic.query(
+    'passenger_class == 2')['age'].isnull().sum()))
+# df_mean_second_age = df_titanic.query(
+# 'passenger_class == 2')['age'].dropna().mean()
+# print(df_mean_second_age)
+# df_titanic['age'].fillna(df_mean_second_age, inplace=True)
+# print(df_titanic.query('passenger_class == 2')['age'].isnull().sum())
+
+# Contagem de valores nulos na idade da terceira classe.
+print('Pessoas da terceira classe sem idade definida: {}'
+    .format(df_titanic.query(
+    'passenger_class == 3')['age'].isnull().sum()))
+# df_mean_third_age = df_titanic.query(
+# 'passenger_class == 3')['age'].dropna().mean()
+# print(df_mean_third_age)
+# df_titanic['age'].fillna(df_mean_third_age, inplace=True)
+# print(df_titanic.query('passenger_class == 3')['age'].isnull().sum())
+```
+
+    Pessoas da primeira classe sem idade definida: 30
+    Pessoas da segunda classe sem idade definida: 0
+    Pessoas da terceira classe sem idade definida: 0
+
+
+
+```python
+# Cria nova coluna com categoria de idade.
+#
+df_criancas = df_titanic.query('age <= 12').copy()
+df_adolescente = df_titanic.query('12 < age <= 18').copy()
+df_adulto = df_titanic.query('age > 18').copy()
+df_sem_idade = df_titanic[df_titanic['age'].isnull()].copy()
+
+idade_crianca = np.repeat('Criança', df_criancas.shape[0])
+idade_adolescente = np.repeat('Adolescente', df_adolescente.shape[0])
+idade_adulto = np.repeat('Adulto', df_adulto.shape[0])
+idade_desconhecido = np.repeat('Desconhecido', df_sem_idade.shape[0])
+
+df_criancas['age_category'] = idade_crianca
+df_adolescente['age_category'] = idade_adolescente
+df_adulto['age_category'] = idade_adulto
+df_sem_idade['age_category'] = idade_desconhecido
+
+df_titanic_edited = df_criancas.append(
+    [df_adolescente, df_adulto, df_sem_idade])
+df_titanic_edited.sort_index(inplace=True)
+```
+
+
+```python
+# Local de embarque esta sendo removido os nulos para calculos, pois como são
+# letras, não é possível ter uma média.
+# Teria de ser utilizados um modelo de predição para avaliar um valor mais pró-
+# ximo do correto.
+
+df_titanic_edited.to_csv('titanic_edited.csv', index=False)
+```
+
+## 1.4. Analises
+
+
+```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+% matplotlib inline
+
+""" Geração de tabelas e gráficos e outros elementos usando do Data Set do Titanic editado
+oferencido no curso de fundamentos de Data Science I (Udacity).
+"""
+
+# Algumas analises não foram feitas devido ao banco de dados ser cortado, onde
+# poderiamos verificar as informação familiares pelas colunas SibSp e Parch,
+# existem informações de pessoas com acompanhantes mas não existem estes acompa-
+# nhantes no banco de dados.
+
+# Formata os ponto flutuantes para quatro casas decimais.
+pd.set_option('display.float_format', '{:.4f}'.format)
+
+df_titanic = pd.read_csv('titanic_edited.csv')
+# Cabeçalho.
+df_titanic.head(5)
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>survived</th>
+      <th>passenger_class</th>
+      <th>name</th>
+      <th>sex</th>
+      <th>age</th>
+      <th>sibsp</th>
+      <th>parch</th>
+      <th>ticket</th>
+      <th>fare</th>
+      <th>embarked</th>
+      <th>age_category</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>3</td>
+      <td>Braund, Mr. Owen Harris</td>
+      <td>male</td>
+      <td>22.0000</td>
+      <td>1</td>
+      <td>0</td>
+      <td>A/5 21171</td>
+      <td>7.2500</td>
+      <td>S</td>
+      <td>Adulto</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Cumings, Mrs. John Bradley (Florence Briggs Th...</td>
+      <td>female</td>
+      <td>38.0000</td>
+      <td>1</td>
+      <td>0</td>
+      <td>PC 17599</td>
+      <td>71.2833</td>
+      <td>C</td>
+      <td>Adulto</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>3</td>
+      <td>Heikkinen, Miss. Laina</td>
+      <td>female</td>
+      <td>26.0000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>STON/O2. 3101282</td>
+      <td>7.9250</td>
+      <td>S</td>
+      <td>Adulto</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Futrelle, Mrs. Jacques Heath (Lily May Peel)</td>
+      <td>female</td>
+      <td>35.0000</td>
+      <td>1</td>
+      <td>0</td>
+      <td>113803</td>
+      <td>53.1000</td>
+      <td>S</td>
+      <td>Adulto</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>3</td>
+      <td>Allen, Mr. William Henry</td>
+      <td>male</td>
+      <td>35.0000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>373450</td>
+      <td>8.0500</td>
+      <td>S</td>
+      <td>Adulto</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+# Nomes das colunas.
+print('Colunas: ', *(x for x in df_titanic.columns[1:]), sep=' | ')
+```
+
+    Colunas:  | passenger_class | name | sex | age | sibsp | parch | ticket | fare | embarked | age_category
+
+
+
+```python
+# Tabela 1: Passageiros por classe social, total de indivíduos por categoria de
+# idade e sobreviventes da categoria.
+df_1 = df_titanic.query('survived == 1').groupby(
+    ['passenger_class', 'age_category'])['survived'].count().reset_index()
+class_sum = df_1['survived'].sum()
+df_1.loc['total'] = np.array(['-','-',class_sum])
+df_1['survived'] = df_1['survived'].astype(int)
+df_1.to_csv('tables/t_1.csv', index=False)
+print('Tabela1: Passageiros por classe social, total de indivíduos por categoria de idade e sobreviventes da categoria.')
+df_1
+```
+
+    Tabela1: Passageiros por classe social, total de indivíduos por categoria de idade e sobreviventes da categoria.
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>passenger_class</th>
+      <th>age_category</th>
+      <th>survived</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Adolescente</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>Adulto</td>
+      <td>122</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>Criança</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2</td>
+      <td>Adolescente</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>Adulto</td>
+      <td>64</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>2</td>
+      <td>Criança</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>3</td>
+      <td>Adolescente</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>3</td>
+      <td>Adulto</td>
+      <td>86</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>3</td>
+      <td>Criança</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>total</th>
+      <td>-</td>
+      <td>-</td>
+      <td>342</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 A *Tabela 1* demonstra que a grande maioria dos sobreviventes do naufrágio do Titanic, em todas as classes de passageiros, são adultos, sendo a grande maioria pertencentes a primeira classe. Esses dados consideram que 30 pessoas não identificadas da primeira classe são da categoria adulta, por intermédio da substituição dos Nas pela de média entre a quantidade de passageiros dessa classe. Ainda sabemos que o total desses sobreviventes somam 342 passageiros.
 
-A *Figura 1* ajuda a esclarecer visualmente a porcentagem de sobreviventes entre cada categoria e sua classe de passageiro.
 
-**Figura 1** - Gráfico de sobreviventes por classe e categoria de idade.
+```python
+# Gráfico de Sobreviventes por classe e categoria de idade.
+# Existe um warning nesse gráfico, mas não entendi como resolver.
+g1 = sns.catplot(data=df_titanic, x='passenger_class', y='survived',
+    kind='bar', hue='age_category')
+g1._legend.set_title('Categoria de Idade')
+plt.xlabel('Classe')
+plt.ylabel('Sobreviventes')
+plt.title('Sobreviventes por classe e categoria de idade')
+sns.despine(offset=5, trim=True)
+g1.savefig('imgs/g1-survived-class-by-age-cotegory.png')
 
-![Gráfico de Sobreviventes por classe e categoria de idade.](imgs/g1-survived-class-by-age-cotegory.png)
+```
 
-**Figura 2** - Gráfico de contagem de passageiros por classe e categoria de idade.
+    /home/trprado/.local/share/virtualenvs/udacity-WaEjM5--/lib/python3.6/site-packages/scipy/stats/stats.py:1713: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
+      return np.add.reduce(sorted[indexer] * weights, axis=axis) / sumval
 
-![Gráfico de contagem de passageiros por classe e categoria de idade.](imgs/g2-count-class-by-age-cotegory.png)
+
+
+![png](output_15_1.png)
+
+
+A *Figura 1* ajuda a esclarecer visualmente a porcentagem de sobreviventes entre cada categoria e sua classe de passageiro. Por ela pode-se verificar claramente que a grande maioria dos sobreviventes são da primeira classe, sendo que na segunda classe quase todas as crianças sobreviveram.
+
+
+```python
+# Gráfico de contagem de passageiros por classe e categoria de idade.
+g2 = sns.catplot(data=df_titanic, x='passenger_class',
+    kind='count', hue='age_category')
+g2._legend.set_title('Categoria de Idade')
+plt.xlabel('Classe')
+plt.ylabel('Contagem')
+plt.title('Contagem por classe e categoria de idade')
+sns.despine(offset=5, trim=True)
+g2.savefig('imgs/g2-count-class-by-age-cotegory.png')
+```
+
+
+![png](output_17_0.png)
+
 
 Na *Figura 2* observa-se que a população de passageiros era constituída, na maior parte, por adultos. Para todas as categorias de idade, observa-se maior discrepância de valores na terceira classe em relação as demais. Observa-se ainda que a população de crianças na primeira classe foi a menor entre as classes.
 
-**Figura 3** - Gráfico de caixa de categoria de idade por classe.
 
-![Gráfico de caixa de categoria de idade por classe.](imgs/g3-box-class-by-age-cotegory.png)
+```python
+# Gráfico de caixa de categoria de idade por classe.
+g3 = sns.catplot(y="age_category", x="age", row="passenger_class",
+                 orient="h", height=2, aspect=4, kind="box",
+                 data=df_titanic.query('age_category != "Desconhecido"'))
+g3.set_ylabels('Categoria de Idade')
+g3.set_xlabels('Idade')
+g3.set_titles("{row_name}(a) classe")
+sns.despine(offset=5, trim=True)
+g3.savefig('imgs/g3-box-class-by-age-cotegory.png')
+```
 
-O mesmo é observado na *Figura 3*, com informações adicionais de que existem outliers na categoria adultos em todas as classes (*Figura 11*). Observa-se também que existe pouca variabilidade dentro das categorias, exceto para criança na primeira e terceira classe, adolescente na segunda classe e adultos na terceira classe.
 
-**Figura 4** - Gráfico de caixa entre idade de passageiros adultos e classe social.
+![png](output_19_0.png)
 
-![Gráfico de caixa entre idade de passageiros adultos e classe social.](imgs/g8-box-adult-age-by-social.png)
 
-**Figura 5** - Gráfico de frequência da primeira classe.
+O mesmo é observado na *Figura 3*, com informações adicionais de que existem outliers na categoria adultos em todas as classes (*Figura 4*). Observa-se também que existe pouca variabilidade dentro das categorias, exceto para criança na primeira e terceira classe, adolescente na segunda classe e adultos na terceira classe.
 
-![Gráfico de frequência da primeira classe.](imgs/g11-hist-age-first-to-third-class.png)
+
+```python
+# Gráfico de caixa entre idade de passageiros adultos e classe social.
+f, g8 = plt.subplots(figsize=(6, 6))
+sns.boxplot(x="passenger_class", y="age",
+            data=df_titanic.query('age_category != "Desconhecido" & age > 18'))
+plt.ylabel('Idade')
+plt.xlabel('Classe')
+plt.title("Idade dos adultos por classe")
+sns.despine(offset=5, trim=True);
+g8.figure.savefig('imgs/g8-box-adult-age-by-social.png')
+```
+
+
+![png](output_21_0.png)
+
+
+A *Figura 4* demonstra um gráfico de caixa com dados dos passageiros adultos em diferentes classes. É possível ver que existem outliers em todas as categorias.
+
+
+```python
+# Histograma idade por classe social
+
+g = sns.FacetGrid(df_titanic_edited, col="passenger_class", height=5)
+g.set_ylabels('Frequência')
+g.map(plt.hist, "age")
+g.set_ylabels('Frequência')
+g.set_xlabels('Idade')
+g.set(xticks=np.arange(0, 85, 5),
+      xticklabels=['0', '', '10', '', '20', '', '30', '',
+                   '40', '', '50', '', '60', '', '70', '', '80'])
+sns.despine(offset=5, trim=True);
+g.savefig('imgs/g11-hist-age-first-to-third-class.png')
+```
+
+
+![png](output_23_0.png)
+
 
 O primeiro gráfico de frequência na *Figura 5* representando a primeira classe apresenta uma distribuição simétrica e a maior frequência observada é de adultos com idade variando de 35 a 40 anos. No segundo e terceiro gráficos de frequência da *Figura 5* observam-se assimetrias positivas, sendo que no terceiro gráfico a maior frequência de idade varia de 40 a 45 anos e pertence a categoria adulta.
 
-**Figura 8** - Gráfico de contagem de passageiros por classe e gênero.
 
-![Gráfico de contagem de passageiros por classe e gênero.](imgs/g4-count-passengers-class.png)
+```python
+# Gráfico de contagem de passageiros por classe e gênero.
+g4 = sns.catplot(data=df_titanic, x='passenger_class', kind='count', hue='sex')
+g4._legend.set_title('Gênero')
+plt.xlabel('Classe')
+plt.ylabel('Contagem')
+plt.title('Contagem de pessoas por classe e gênero')
+sns.despine(offset=5, trim=True)
+g4.savefig('imgs/g4-count-passengers-class.png')
+```
 
-**tabela 2** - Passageiros por classe, total de indivíduos por sexo e sobreviventes da categoria.
 
-| passenger_class | sex    | total | survived |
-|----------------:|--------|:-----:|:--------:|
-| 1               | female | 94    | 91       |
-| 1               | male   | 122   | 45       |
-| 2               | female | 76    | 70       |
-| 2               | male   | 108   | 17       |
-| 3               | female | 144   | 72       |
-| 3               | male   | 347   | 47       |
+![png](output_25_0.png)
 
-A *Tabela 2* mostra que existe mais homens e mulheres na terceira classe, como observado anteriormente nas *Figuras 2 e 8*. A maioria dos sobreviventes são do gênero feminino, *Tabela 4*, sendo que a primeira e segunda classe quase todas as passageiras sobreviveram. Esses dados podem ser reafirmados pela *Figura 8*, que mostra a contagem de passageiros a bordo, com uma discrepância de passageiros do gênero masculino na terceira classe.
 
-**Tabela 3** - Contagem de passageiros por classe e sobreviventes.
+A *Figura 6* demonstra que a contagem de homens a bordo em todas as classes é maior que de de mulheres idependente da idade. Ainda há discrepância de passageiros do gênero masculino na terceira classe
 
-| passenger_class | total | survived |
-|----------------:|:-----:|:--------:|
-| 1               | 216   | 136      |
-| 2               | 184   | 87       |
-| 3               | 491   | 119      |
+
+```python
+# Tabela 2: Passageiros por classe, total de indivíduos por sexo e
+# sobrevivementes da categoria.
+df_2 = df_titanic.groupby(['passenger_class', 'sex']).agg(
+    {'name':'count', 'survived':'sum'}).rename(
+    columns={'name':'total'})
+df_2.to_csv('tables/t_2.csv')
+print('Tabela 2: Passageiros por classe com total de indivíduos por classe e sobreviventes.')
+df_2
+```
+
+    Tabela 2: Passageiros por classe com total de indivíduos por classe e sobreviventes.
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>total</th>
+      <th>survived</th>
+    </tr>
+    <tr>
+      <th>passenger_class</th>
+      <th>sex</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">1</th>
+      <th>female</th>
+      <td>94</td>
+      <td>91</td>
+    </tr>
+    <tr>
+      <th>male</th>
+      <td>122</td>
+      <td>45</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">2</th>
+      <th>female</th>
+      <td>76</td>
+      <td>70</td>
+    </tr>
+    <tr>
+      <th>male</th>
+      <td>108</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">3</th>
+      <th>female</th>
+      <td>144</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <th>male</th>
+      <td>347</td>
+      <td>47</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+A *Tabela 2* mostra que existe mais homens e mulheres na terceira classe, como observado anteriormente nas *Figuras 6*. A maioria dos sobreviventes são do gênero feminino, *Tabela 4*, sendo que a primeira e segunda classe quase todas as passageiras sobreviveram. Esses dados podem ser reafirmados pela *Figura 6*, que mostra a contagem de passageiros a bordo, com uma discrepância de passageiros do gênero masculino na terceira classe.
+
+
+```python
+# Tabela 3: Contagem de passageiros por classe e sobreviventes.
+df_3 = df_titanic.groupby('passenger_class').agg(
+    {'name':'count', 'survived': 'sum'}).rename(
+    columns={'name':'total'})
+df_3.to_csv('tables/t_3.csv')
+print('Tabela 3: Total de passageiros por classe e sobreviventes.')
+df_3
+```
+
+    Tabela 3: Total de passageiros por classe e sobreviventes.
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>total</th>
+      <th>survived</th>
+    </tr>
+    <tr>
+      <th>passenger_class</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>216</td>
+      <td>136</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>184</td>
+      <td>87</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>491</td>
+      <td>119</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 A *Tabela 3* demonstra que a grande maioria, com o dobro de passageiros da primeira classe pertencia a terceira classe, porém aproximadamente 1/4 sobreviveu, enquanto a primeira classe teve uma sobrevivência maior que 50%.
 
-**Figura 9** - Contagem de passageiros por classe.
 
-![Contagem de passageiros por classe.](imgs/g5-count-passenger-class.png)
+```python
+# Contagem de passageiros por classe.
+g5 = sns.catplot(data=df_titanic, x='passenger_class', kind='count')
+plt.xlabel('Classe')
+plt.ylabel('Contagem')
+plt.title('Contagem de passageiros por classe social.')
+sns.despine(offset=5, trim=True)
+g5.savefig('imgs/g5-count-passenger-class.png')
+```
 
-**Tabela 4** - Total de indivíduos por gênero e sobreviventes.
 
-| sex    | total | survived |
-|:-------|:-----:|:--------:|
-| female | 314   | 233      |
-| male   | 577   | 109      |
+![png](output_31_0.png)
+
+
+A *Figura 9* mostra o número de passageiros por classe. A classe com maior número de passageiros é a terceira classe, a segunda classe foi a com menor número de passageiros.
+
+
+```python
+# Contagem de pessoas por gênero.
+g6 = sns.catplot(data=df_titanic, x='sex', kind='count')
+plt.xlabel('Gênero')
+plt.ylabel('Contagem')
+plt.title('Contagem de pessoas por gênero')
+sns.despine(offset=5, trim=True)
+g6.savefig('imgs/g6-count-people-by-gender.png')
+```
+
+
+![png](output_33_0.png)
+
+
+A *Figura 10* mostra que quase tinha-se o dobre de pessoas a bordo do gênero masculino em comparação ao gênero feminino.
+
+
+```python
+# Tabela 4: Total de indivíduos por gênero e sobreviventes.
+df_4 = df_titanic.groupby('sex').agg(
+    {'name':'count', 'survived':'sum'}).rename(columns={'name':'total'})
+df_4.to_csv('tables/t_4.csv')
+print('Tabela 4: Total de indivíduos por gênero e sobreviventes.')
+df_4
+```
+
+    Tabela 4: Total de indivíduos por gênero e sobreviventes.
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>total</th>
+      <th>survived</th>
+    </tr>
+    <tr>
+      <th>sex</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>female</th>
+      <td>314</td>
+      <td>233</td>
+    </tr>
+    <tr>
+      <th>male</th>
+      <td>577</td>
+      <td>109</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 A *Tabela 4* demonstra que os passageiros eram majoritariamente do gênero masculino, como também é observado na *Figura 10*, com maior sobrevivência de pessoas do gênero feminino. O que indica que mulheres tiveram uma maior taxa de sobrevivência comparado a homens, o que é esperado em um acidente dessas proporções.
 
-**Figura 10** - Contagem de pessoas por gênero.
 
-![Contagem de pessoas por gênero.](imgs/g6-count-people-by-gender.png)
+```python
+# Tabela 5: Contagem de pessoas por categoria de idade e sobreviventes.
+df_5 = df_titanic.groupby('age_category').agg(
+    {'name':'count', 'survived':'sum'}).rename(columns={'name':'total'})
+df_5.to_csv('tables/t_5.csv')
+print('Tabela 5: Contagem de pessoas por categoria de idade e sobreviventes.')
+df_5
+```
 
-**Tabela 5** - Contagem de pessoas por categoria de idade e sobreviventes
+    Tabela 5: Contagem de pessoas por categoria de idade e sobreviventes.
 
-| age_category | total | survived |
-|:-------------|:-----:|:--------:|
-| Adolescente  | 70    | 30       |
-| Adulto       | 752   | 272      |
-| Criança      | 69    | 40       |
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>total</th>
+      <th>survived</th>
+    </tr>
+    <tr>
+      <th>age_category</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Adolescente</th>
+      <td>70</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <th>Adulto</th>
+      <td>752</td>
+      <td>272</td>
+    </tr>
+    <tr>
+      <th>Criança</th>
+      <td>69</td>
+      <td>40</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+A *Tabela 5* mostra que a grande maioria dos passageiros eram adultos, com uma contagem quase igual de adolescentes e crianças.
+
+
+```python
+# Contagem de pessoas por categoria de idade.
+g7 = sns.catplot(data=df_titanic, x='age_category', kind='count')
+plt.xlabel('Categoria de Idade')
+plt.ylabel('Contagem')
+plt.title('Contagem de pessoas por categoria de idade')
+sns.despine(offset=5, trim=True)
+g7.savefig('imgs/g7-count-pearson-by-age-category.png')
+```
+
+
+![png](output_39_0.png)
+
 
 A grande maioria dos passageiros era da categoria adulta, com a minoria sendo de crianças e adolescentes (*Figura 11*). Os adultos tiveram a maior taxa de morte devido seu maior número, porém mais de 50% dos adolescentes faleceram no naufrágio, no total 57,97% das crianças, 37,52% dos adultos e 42,86% dos adolescentes sobreviveram como pode ser observado na *Tabela 5*. Assim a maior taxa de sobrevivência não é de adultos e sim de crianças, com quase 58% de sobrevivência.
 
-**Figura 11** - Contagem de pessoas por categoria de idade.
 
-![Contagem de pessoas por categoria de idade.](imgs/g7-count-pearson-by-age-category.png)
+```python
+# Tabela 6: Descritiva da categoria de idade dos passageiros.
+df_7 = df_titanic.groupby('age_category')['age'].describe().dropna()
+df_7.to_csv('tables/t_7.csv')
+print('Tabela 6: Descritiva da categoria de idade dos passageiros.')
+df_7
+```
+
+    Tabela 6: Descritiva da categoria de idade dos passageiros.
 
 
-**Tabela 6** - Descritiva da categoria de idade dos passageiros.
 
-| age_category | count | mean              | std                | min  | 25%  | 50%  | 75%                | max  |
-|--------------|-------|-------------------|--------------------|------|------|------|--------------------|------|
-| Adolescente  | 70.0  | 16.57857142857143 | 1.4386882972218642 | 13.0 | 16.0 | 17.0 | 18.0               | 18.0 |
-| Adulto       | 752.0 | 35.21651467055594 | 10.613821418618652 | 19.0 | 27.0 | 36.0 | 38.233440860215055 | 80.0 |
-| Criança      | 69.0  | 4.770579710144927 | 3.390390348885739  | 0.42 | 2.0  | 4.0  | 8.0                | 12.0 |
 
-A *Tabela 6* mostra a descritiva das categorias de idade, No geral, a idade média dos adolescentes é de, aproximadamente, 17 anos (desvio de 1.44), mínimo de 13 anos e máximo de 18 anos; os adultos possuem, aproximadamente, 35 anos (desvio de 10.61), com mínimo de 19 anos e máximo de 80 anos; e as crianças possuem a idade média de, aproximadamente, 5 anos (desvio de 3.39), com mínimo de 0.42 meses e máximo de 12 anos. A *Tabela 7* separa a descritiva das categorias de idade entre as classes de passageiro, por ela é possível verificar que adultos da primeira classe são os mais velhos, com idade media de 40 anos, já adolescentes tem pouca variação na média de idade por classe, assim como na categoria infantil.
 
-**Tabela 7** - Descritiva da categoria de idade dos passageiros por classe.
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-| age_category | passenger_class | count | mean               | std                | min  | 25%   | 50%                | 75%                | max  |
-|--------------|-----------------|-------|--------------------|--------------------|------|-------|--------------------|--------------------|------|
-| Adolescente  | 1               | 12.0  | 16.666666666666668 | 1.3026778945578592 | 14.0 | 16.0  | 17.0               | 18.0               | 18.0 |
-| Adolescente  | 2               | 12.0  | 16.75              | 1.712255291076124  | 13.0 | 16.0  | 17.5               | 18.0               | 18.0 |
-| Adolescente  | 3               | 46.0  | 16.51086956521739  | 1.423958217375397  | 13.0 | 16.0  | 17.0               | 18.0               | 18.0 |
-| Adulto       | 1               | 200.0 | 40.20251612903226  | 12.184442955973504 | 19.0 | 31.75 | 38.233440860215055 | 48.0               | 80.0 |
-| Adulto       | 2               | 155.0 | 34.3810828997572   | 10.599676082201874 | 19.0 | 27.0  | 32.5               | 39.0               | 70.0 |
-| Adulto       | 3               | 397.0 | 33.030851277051006 | 8.81627325913373   | 19.0 | 25.0  | 36.0               | 38.233440860215055 | 74.0 |
-| Criança      | 1               | 4.0   | 4.48               | 4.530077262034281  | 0.92 | 1.73  | 3.0                | 5.75               | 11.0 |
-| Criança      | 2               | 17.0  | 3.4899999999999998 | 2.5219659989777816 | 0.67 | 1.0   | 3.0                | 5.0                | 8.0  |
-| Criança      | 3               | 48.0  | 5.248333333333334  | 3.510292667275633  | 0.42 | 2.0   | 4.0                | 9.0                | 12.0 |
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-A tabela 7 é uma descritiva dos passageiros agrupada por categoria de idade
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+    </tr>
+    <tr>
+      <th>age_category</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Adolescente</th>
+      <td>70.0000</td>
+      <td>16.5786</td>
+      <td>1.4387</td>
+      <td>13.0000</td>
+      <td>16.0000</td>
+      <td>17.0000</td>
+      <td>18.0000</td>
+      <td>18.0000</td>
+    </tr>
+    <tr>
+      <th>Adulto</th>
+      <td>752.0000</td>
+      <td>35.2165</td>
+      <td>10.6138</td>
+      <td>19.0000</td>
+      <td>27.0000</td>
+      <td>36.0000</td>
+      <td>38.2334</td>
+      <td>80.0000</td>
+    </tr>
+    <tr>
+      <th>Criança</th>
+      <td>69.0000</td>
+      <td>4.7706</td>
+      <td>3.3904</td>
+      <td>0.4200</td>
+      <td>2.0000</td>
+      <td>4.0000</td>
+      <td>8.0000</td>
+      <td>12.0000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
-**Tabela 8** - Média de valor da passagem por local de embarque e sua classe.
 
-| passenger_class | embarked | fare_mean          | total |
-|----------------:|:--------:|--------------------|:------|
-| 1               | C        | 104.71852941176469 | 85    |
-| 1               | Q        | 90.0               | 2     |
-| 1               | S        | 70.36486220472443  | 127   |
-| 2               | C        | 25.358335294117644 | 17    |
-| 2               | Q        | 12.35              | 3     |
-| 2               | S        | 20.327439024390245 | 164   |
-| 3               | C        | 11.214083333333337 | 66    |
-| 3               | Q        | 11.183393055555557 | 72    |
-| 3               | S        | 14.64408300283288  | 353   |
 
-Na *Tabela 8* podemos ver uma separação dos valores médios das passagens em cada posto de embarque do Titanic. Sendo C (Cherbourg), Q (Queenstown) e S (Southampton). As passagens mais caras da primeira classe foram compradas em Cherbourg (*Figura 13*), totalizando 168 passageiros sendo a maioria da primeira classe (Figura 12), sendo que em Southampton apresentou um maior movimento de passageiros. Houve pouquíssimos embarques da primeira e segunda classe em Queenstown, cinco passageiros apenas. Pela *Figura 12* pode-se observar que existem outliers com relação ao valor da passagem, como existem passagens com valores altos que permitiam entrada de mais de um passageiro. Como o banco de dados possuía dados faltantes, suspeita-se que esses outliers sejam passagens que abrangem mais passageiros que não estavam contidos no dataset.
+A *Tabela 6* mostra a descritiva das categorias de idade, No geral, a idade média dos adolescentes é de, aproximadamente, 17 anos (desvio de 1.44), mínimo de 13 anos e máximo de 18 anos; os adultos possuem, aproximadamente, 35 anos (desvio de 10.61), com mínimo de 19 anos e máximo de 80 anos; e as crianças possuem a idade média de, aproximadamente, 5 anos (desvio de 3.39), com mínimo de 0.42 meses e máximo de 12 anos.
 
-**Figura 12** - Gráfico de caixa entre classe de passageiros e taxa da passagem.
 
-![Gráfico de caixa entre classe de passageiros e taxa da passagem.](imgs/g9-box-class-by-ticket-fare.png)
+```python
+# Tabela 7: Descritiva da categoria de idade dos passageiros por classe.
+df_8 = df_titanic.groupby(
+    ['age_category', 'passenger_class'])['age'].describe().dropna()
+df_8.to_csv('tables/t_8.csv')
+print('Tabela 7: Descritiva da categoria de idade dos passageiros por classe.')
+df_8
+```
 
-**Figura 13** - Gráfico de barra com local de embarque e classe do passageiro.
+    Tabela 7: Descritiva da categoria de idade dos passageiros por classe.
 
-![Gráfico de barra com local de embarque e classe do passageiro.](imgs/g10-bar-embarked-by-class.png)
 
-**Tabela 9** - Passagens com maior número de passageiros da primeira classe.
 
-| survived | passenger_class | name                                                | sex    | age                | sibsp | parch | ticket   | fare     | embarked | age_category | freq |
-|----------|-----------------|-----------------------------------------------------|--------|--------------------|-------|-------|----------|----------|----------|--------------|------|
-| 1        | 1               | "Bidois, Miss. Rosalie"                             | female | 42.0               | 0     | 0     | PC 17757 | 227.525  | C        | Adulto       | 4    |
-| 0        | 1               | "Robbins, Mr. Victor"                               | male   | 38.233440860215055 | 0     | 0     | PC 17757 | 227.525  | C        | Adulto       | 4    |
-| 1        | 1               | "Astor, Mrs. John Jacob (Madeleine Talmadge Force)" | female | 18.0               | 1     | 0     | PC 17757 | 227.525  | C        | Adolescente  | 4    |
-| 1        | 1               | "Endres, Miss. Caroline Louise"                     | female | 38.0               | 0     | 0     | PC 17757 | 227.525  | C        | Adulto       | 4    |
-| 0        | 1               | "Fortune, Mr. Charles Alexander"                    | male   | 19.0               | 3     | 2     | 19950    | 263.0    | S        | Adulto       | 4    |
-| 1        | 1               | "Fortune, Miss. Mabel Helen"                        | female | 23.0               | 3     | 2     | 19950    | 263.0    | S        | Adulto       | 4    |
-| 1        | 1               | "Fortune, Miss. Alice Elizabeth"                    | female | 24.0               | 3     | 2     | 19950    | 263.0    | S        | Adulto       | 4    |
-| 0        | 1               | "Fortune, Mr. Mark"                                 | male   | 64.0               | 1     | 4     | 19950    | 263.0    | S        | Adulto       | 4    |
-| 1        | 1               | "Fleming, Miss. Margaret"                           | female | 38.233440860215055 | 0     | 0     | 17421    | 110.8833 | C        | Adulto       | 4    |
-| 1        | 1               | "Thayer, Mr. John Borland Jr"                       | male   | 17.0               | 0     | 2     | 17421    | 110.8833 | C        | Adolescente  | 4    |
 
-**Tabela 10** - Passagens com maior número de passageiros da segunda classe.
 
-| survived | passenger_class | name                                                    | sex    | age  | sibsp | parch | ticket        | fare    | embarked | age_category | freq |
-|----------|-----------------|---------------------------------------------------------|--------|------|-------|-------|---------------|---------|----------|--------------|------|
-| 0        | 2               | "Hood, Mr. Ambrose Jr"                                  | male   | 21.0 | 0     | 0     | S.O.C. 14879  | 73.5    | S        | Adulto       | 5    |
-| 0        | 2               | "Hickman, Mr. Stanley George"                           | male   | 21.0 | 2     | 0     | S.O.C. 14879  | 73.5    | S        | Adulto       | 5    |
-| 0        | 2               | "Davies, Mr. Charles Henry"                             | male   | 18.0 | 0     | 0     | S.O.C. 14879  | 73.5    | S        | Adolescente  | 5    |
-| 0        | 2               | "Hickman, Mr. Leonard Mark"                             | male   | 24.0 | 2     | 0     | S.O.C. 14879  | 73.5    | S        | Adulto       | 5    |
-| 0        | 2               | "Hickman, Mr. Lewis"                                    | male   | 32.0 | 2     | 0     | S.O.C. 14879  | 73.5    | S        | Adulto       | 5    |
-| 1        | 2               | "Laroche, Miss. Simonne Marie Anne Andree"              | female | 3.0  | 1     | 2     | SC/Paris 2123 | 41.5792 | C        | Criança      | 3    |
-| 1        | 2               | "Laroche, Mrs. Joseph (Juliette Marie Louise Lafargue)" | female | 22.0 | 1     | 2     | SC/Paris 2123 | 41.5792 | C        | Adulto       | 3    |
-| 0        | 2               | "Laroche, Mr. Joseph Philippe Lemercier"                | male   | 25.0 | 1     | 2     | SC/Paris 2123 | 41.5792 | C        | Adulto       | 3    |
-| 0        | 2               | "Hart, Mr. Benjamin"                                    | male   | 43.0 | 1     | 1     | F.C.C. 13529  | 26.25   | S        | Adulto       | 3    |
-| 1        | 2               | "Hart, Mrs. Benjamin (Esther Ada Bloomfield)"           | female | 45.0 | 1     | 1     | F.C.C. 13529  | 26.25   | S        | Adulto       | 3    |
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-**Tabela 11** - Passagens com maior número de passageiros da terceira classe.
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-| survived | passenger_class | name                                   | sex    | age                | sibsp | parch | ticket   | fare   | embarked | age_category | freq |
-|----------|-----------------|----------------------------------------|--------|--------------------|-------|-------|----------|--------|----------|--------------|------|
-| 0        | 3               | "Sage, Master. Thomas Henry"           | male   | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
-| 0        | 3               | "Sage, Miss. Constance Gladys"         | female | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
-| 0        | 3               | "Sage, Mr. Frederick"                  | male   | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
-| 0        | 3               | "Sage, Mr. George John Jr"             | male   | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
-| 0        | 3               | "Sage, Miss. Stella Anna"              | female | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
-| 0        | 3               | "Sage, Mr. Douglas Bullen"             | male   | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
-| 0        | 3               | "Sage, Miss. Dorothy Edith ""Dolly"""  | female | 38.233440860215055 | 8     | 2     | CA. 2343 | 69.55  | S        | Adulto       | 7    |
-| 0        | 3               | "Andersson, Mr. Anders Johan"          | male   | 39.0               | 1     | 5     | 347082   | 31.275 | S        | Adulto       | 7    |
-| 0        | 3               | "Andersson, Miss. Ellis Anna Maria"    | female | 2.0                | 4     | 2     | 347082   | 31.275 | S        | Criança      | 7    |
-| 0        | 3               | "Andersson, Miss. Ingeborg Constanzia" | female | 9.0                | 4     | 2     | 347082   | 31.275 | S        | Criança      | 7    |
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+    </tr>
+    <tr>
+      <th>age_category</th>
+      <th>passenger_class</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="3" valign="top">Adolescente</th>
+      <th>1</th>
+      <td>12.0000</td>
+      <td>16.6667</td>
+      <td>1.3027</td>
+      <td>14.0000</td>
+      <td>16.0000</td>
+      <td>17.0000</td>
+      <td>18.0000</td>
+      <td>18.0000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>12.0000</td>
+      <td>16.7500</td>
+      <td>1.7123</td>
+      <td>13.0000</td>
+      <td>16.0000</td>
+      <td>17.5000</td>
+      <td>18.0000</td>
+      <td>18.0000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>46.0000</td>
+      <td>16.5109</td>
+      <td>1.4240</td>
+      <td>13.0000</td>
+      <td>16.0000</td>
+      <td>17.0000</td>
+      <td>18.0000</td>
+      <td>18.0000</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">Adulto</th>
+      <th>1</th>
+      <td>200.0000</td>
+      <td>40.2025</td>
+      <td>12.1844</td>
+      <td>19.0000</td>
+      <td>31.7500</td>
+      <td>38.2334</td>
+      <td>48.0000</td>
+      <td>80.0000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>155.0000</td>
+      <td>34.3811</td>
+      <td>10.5997</td>
+      <td>19.0000</td>
+      <td>27.0000</td>
+      <td>32.5000</td>
+      <td>39.0000</td>
+      <td>70.0000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>397.0000</td>
+      <td>33.0309</td>
+      <td>8.8163</td>
+      <td>19.0000</td>
+      <td>25.0000</td>
+      <td>36.0000</td>
+      <td>38.2334</td>
+      <td>74.0000</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">Criança</th>
+      <th>1</th>
+      <td>4.0000</td>
+      <td>4.4800</td>
+      <td>4.5301</td>
+      <td>0.9200</td>
+      <td>1.7300</td>
+      <td>3.0000</td>
+      <td>5.7500</td>
+      <td>11.0000</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>17.0000</td>
+      <td>3.4900</td>
+      <td>2.5220</td>
+      <td>0.6700</td>
+      <td>1.0000</td>
+      <td>3.0000</td>
+      <td>5.0000</td>
+      <td>8.0000</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>48.0000</td>
+      <td>5.2483</td>
+      <td>3.5103</td>
+      <td>0.4200</td>
+      <td>2.0000</td>
+      <td>4.0000</td>
+      <td>9.0000</td>
+      <td>12.0000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+A *Tabela 7* separa a descritiva das categorias de idade entre as classes de passageiro, por ela é possível verificar que adultos da primeira classe são os mais velhos, com idade media de 40 anos, já adolescentes tem pouca variação na média de idade por classe, assim como na categoria infantil.
+
+
+```python
+# Tabela 8: Média de valor da passagem por local de embarque e sua classe.
+df_9 = df_titanic.groupby(['passenger_class', 'embarked']).agg(
+    {'fare':'mean', 'name':'count'}).rename(
+    columns={'fare':'fare_mean','name':'total'})
+df_9.to_csv('tables/t_9.csv')
+print('Tabela 8: Média de valor da passagem por local de embarque e sua classe:')
+df_9
+```
+
+    Tabela 8: Média de valor da passagem por local de embarque e sua classe:
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>fare_mean</th>
+      <th>total</th>
+    </tr>
+    <tr>
+      <th>passenger_class</th>
+      <th>embarked</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="3" valign="top">1</th>
+      <th>C</th>
+      <td>104.7185</td>
+      <td>85</td>
+    </tr>
+    <tr>
+      <th>Q</th>
+      <td>90.0000</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>S</th>
+      <td>70.3649</td>
+      <td>127</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">2</th>
+      <th>C</th>
+      <td>25.3583</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th>Q</th>
+      <td>12.3500</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>S</th>
+      <td>20.3274</td>
+      <td>164</td>
+    </tr>
+    <tr>
+      <th rowspan="3" valign="top">3</th>
+      <th>C</th>
+      <td>11.2141</td>
+      <td>66</td>
+    </tr>
+    <tr>
+      <th>Q</th>
+      <td>11.1834</td>
+      <td>72</td>
+    </tr>
+    <tr>
+      <th>S</th>
+      <td>14.6441</td>
+      <td>353</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+Na *Tabela 8* podemos ver uma separação dos valores médios das passagens em cada posto de embarque do Titanic. Sendo C (Cherbourg), Q (Queenstown) e S (Southampton). As passagens mais caras da primeira classe foram compradas em Cherbourg (*Figura 13*), totalizando 168 passageiros sendo a maioria da primeira classe (Figura 12), sendo que em Southampton apresentou um maior movimento de passageiros. Houve pouquíssimos embarques da primeira e segunda classe em Queenstown, cinco passageiros apenas.
+
+
+```python
+# Gráfico de caixa entre classe de passageiros e taxa da passagem.
+f, g9 = plt.subplots(figsize=(8, 8))
+sns.boxplot(x="passenger_class", y="fare", data=df_titanic)
+plt.ylabel('Preço Passagem')
+plt.xlabel('Classe')
+plt.title("Classe do passageiro por preço da passagem")
+sns.despine(offset=5, trim=True)
+g9.figure.savefig('imgs/g9-box-class-by-ticket-fare.png')
+```
+
+
+![png](output_47_0.png)
+
+
+Pela *Figura 12* pode-se observar que existem outliers com relação ao valor da passagem, como existem passagens com valores altos que permitiam entrada de mais de um passageiro. Como o banco de dados possuía dados faltantes, suspeita-se que esses outliers sejam passagens que abrangem mais passageiros que não estavam contidos no dataset.
+
+
+```python
+# Gráfico de barra com local de embarque e classe do passageiro.
+g10 = sns.catplot(data=df_titanic, x='passenger_class',
+    y='fare', kind='bar', hue='embarked')
+g10._legend.set_title('Locais de Embarque')
+plt.xlabel('Classe')
+plt.ylabel('Tarifa Passagem')
+plt.title('Tarifa da passagem por local de embarque e classe social.')
+sns.despine(offset=5, trim=True)
+g10.savefig('imgs/g10-bar-embarked-by-class.png')
+```
+
+    /home/trprado/.local/share/virtualenvs/udacity-WaEjM5--/lib/python3.6/site-packages/scipy/stats/stats.py:1713: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
+      return np.add.reduce(sorted[indexer] * weights, axis=axis) / sumval
+
+
+
+![png](output_49_1.png)
+
+
+A *Figura 13* contem a visualização da média das tarifas por classe, sendo C (Cherbourg), Q (Queenstown) e S (Southampton). Por ela podemos ver que as passagens em Cherbourg eram as que custavam mais caras tanto para a primeira quanto para a segunda classe. Em Queenstown o valor da passagem entre a terceira classe não tinha grande diferença de preço.
+
+
+```python
+# Passagens com maior número de passageiros da primeira classe.
+df_titanic['freq'] = df_titanic.groupby('ticket')['ticket'].transform('count')
+# print('Passagens com maior número de passageiros da primeira classe:')
+df_titanic_most_pc = df_titanic.sort_values(by=['freq', 'ticket'], ascending=False).query(
+    'passenger_class == 1').head(10)
+df_titanic_most_pc.to_csv('tables/t_10.csv', index=False)
+print('Tabela 9 - Passagens com maior número de passageiros da primeira classe.')
+df_titanic_most_pc
+```
+
+    Tabela 9 - Passagens com maior número de passageiros da primeira classe.
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>survived</th>
+      <th>passenger_class</th>
+      <th>name</th>
+      <th>sex</th>
+      <th>age</th>
+      <th>sibsp</th>
+      <th>parch</th>
+      <th>ticket</th>
+      <th>fare</th>
+      <th>embarked</th>
+      <th>age_category</th>
+      <th>freq</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>380</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Bidois, Miss. Rosalie</td>
+      <td>female</td>
+      <td>42.0000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>PC 17757</td>
+      <td>227.5250</td>
+      <td>C</td>
+      <td>Adulto</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>557</th>
+      <td>0</td>
+      <td>1</td>
+      <td>Robbins, Mr. Victor</td>
+      <td>male</td>
+      <td>38.2334</td>
+      <td>0</td>
+      <td>0</td>
+      <td>PC 17757</td>
+      <td>227.5250</td>
+      <td>C</td>
+      <td>Adulto</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>700</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Astor, Mrs. John Jacob (Madeleine Talmadge Force)</td>
+      <td>female</td>
+      <td>18.0000</td>
+      <td>1</td>
+      <td>0</td>
+      <td>PC 17757</td>
+      <td>227.5250</td>
+      <td>C</td>
+      <td>Adolescente</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>716</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Endres, Miss. Caroline Louise</td>
+      <td>female</td>
+      <td>38.0000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>PC 17757</td>
+      <td>227.5250</td>
+      <td>C</td>
+      <td>Adulto</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>0</td>
+      <td>1</td>
+      <td>Fortune, Mr. Charles Alexander</td>
+      <td>male</td>
+      <td>19.0000</td>
+      <td>3</td>
+      <td>2</td>
+      <td>19950</td>
+      <td>263.0000</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Fortune, Miss. Mabel Helen</td>
+      <td>female</td>
+      <td>23.0000</td>
+      <td>3</td>
+      <td>2</td>
+      <td>19950</td>
+      <td>263.0000</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>341</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Fortune, Miss. Alice Elizabeth</td>
+      <td>female</td>
+      <td>24.0000</td>
+      <td>3</td>
+      <td>2</td>
+      <td>19950</td>
+      <td>263.0000</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>438</th>
+      <td>0</td>
+      <td>1</td>
+      <td>Fortune, Mr. Mark</td>
+      <td>male</td>
+      <td>64.0000</td>
+      <td>1</td>
+      <td>4</td>
+      <td>19950</td>
+      <td>263.0000</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>306</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Fleming, Miss. Margaret</td>
+      <td>female</td>
+      <td>38.2334</td>
+      <td>0</td>
+      <td>0</td>
+      <td>17421</td>
+      <td>110.8833</td>
+      <td>C</td>
+      <td>Adulto</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>550</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Thayer, Mr. John Borland Jr</td>
+      <td>male</td>
+      <td>17.0000</td>
+      <td>0</td>
+      <td>2</td>
+      <td>17421</td>
+      <td>110.8833</td>
+      <td>C</td>
+      <td>Adolescente</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+
+
+```python
+# Passagens com maior número de passageiros da segunda classe.
+df_titanic['freq'] = df_titanic.groupby('ticket')['ticket'].transform('count')
+print('Tabela 10 - Passagens com maior número de passageiros da segunda classe:')
+df_titanic_most_sc = df_titanic.sort_values(by=['freq', 'ticket'], ascending=False).query(
+    'passenger_class == 2').head(10)
+df_titanic_most_sc.to_csv('tables/t_11.csv', index=False)
+df_titanic_most_sc
+```
+
+    Tabela 10 - Passagens com maior número de passageiros da segunda classe:
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>survived</th>
+      <th>passenger_class</th>
+      <th>name</th>
+      <th>sex</th>
+      <th>age</th>
+      <th>sibsp</th>
+      <th>parch</th>
+      <th>ticket</th>
+      <th>fare</th>
+      <th>embarked</th>
+      <th>age_category</th>
+      <th>freq</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>72</th>
+      <td>0</td>
+      <td>2</td>
+      <td>Hood, Mr. Ambrose Jr</td>
+      <td>male</td>
+      <td>21.0000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>S.O.C. 14879</td>
+      <td>73.5000</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>120</th>
+      <td>0</td>
+      <td>2</td>
+      <td>Hickman, Mr. Stanley George</td>
+      <td>male</td>
+      <td>21.0000</td>
+      <td>2</td>
+      <td>0</td>
+      <td>S.O.C. 14879</td>
+      <td>73.5000</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>385</th>
+      <td>0</td>
+      <td>2</td>
+      <td>Davies, Mr. Charles Henry</td>
+      <td>male</td>
+      <td>18.0000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>S.O.C. 14879</td>
+      <td>73.5000</td>
+      <td>S</td>
+      <td>Adolescente</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>655</th>
+      <td>0</td>
+      <td>2</td>
+      <td>Hickman, Mr. Leonard Mark</td>
+      <td>male</td>
+      <td>24.0000</td>
+      <td>2</td>
+      <td>0</td>
+      <td>S.O.C. 14879</td>
+      <td>73.5000</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>665</th>
+      <td>0</td>
+      <td>2</td>
+      <td>Hickman, Mr. Lewis</td>
+      <td>male</td>
+      <td>32.0000</td>
+      <td>2</td>
+      <td>0</td>
+      <td>S.O.C. 14879</td>
+      <td>73.5000</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>1</td>
+      <td>2</td>
+      <td>Laroche, Miss. Simonne Marie Anne Andree</td>
+      <td>female</td>
+      <td>3.0000</td>
+      <td>1</td>
+      <td>2</td>
+      <td>SC/Paris 2123</td>
+      <td>41.5792</td>
+      <td>C</td>
+      <td>Criança</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>608</th>
+      <td>1</td>
+      <td>2</td>
+      <td>Laroche, Mrs. Joseph (Juliette Marie Louise La...</td>
+      <td>female</td>
+      <td>22.0000</td>
+      <td>1</td>
+      <td>2</td>
+      <td>SC/Paris 2123</td>
+      <td>41.5792</td>
+      <td>C</td>
+      <td>Adulto</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>685</th>
+      <td>0</td>
+      <td>2</td>
+      <td>Laroche, Mr. Joseph Philippe Lemercier</td>
+      <td>male</td>
+      <td>25.0000</td>
+      <td>1</td>
+      <td>2</td>
+      <td>SC/Paris 2123</td>
+      <td>41.5792</td>
+      <td>C</td>
+      <td>Adulto</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>314</th>
+      <td>0</td>
+      <td>2</td>
+      <td>Hart, Mr. Benjamin</td>
+      <td>male</td>
+      <td>43.0000</td>
+      <td>1</td>
+      <td>1</td>
+      <td>F.C.C. 13529</td>
+      <td>26.2500</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>440</th>
+      <td>1</td>
+      <td>2</td>
+      <td>Hart, Mrs. Benjamin (Esther Ada Bloomfield)</td>
+      <td>female</td>
+      <td>45.0000</td>
+      <td>1</td>
+      <td>1</td>
+      <td>F.C.C. 13529</td>
+      <td>26.2500</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+
+
+```python
+# Passagens com maior número de passageiros da terceira classe.
+df_titanic['freq'] = df_titanic.groupby('ticket')['ticket'].transform('count')
+print('Tabela 11 - Passagens com maior número de passageiros da terceira classe:')
+df_titanic_most_tc = df_titanic.sort_values(by=['freq', 'ticket'], ascending=False).query(
+    'passenger_class == 3').head(10)
+df_titanic_most_tc.to_csv('tables/t_12.csv', index=False)
+df_titanic_most_tc
+```
+
+    Tabela 11 - Passagens com maior número de passageiros da terceira classe:
+
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>survived</th>
+      <th>passenger_class</th>
+      <th>name</th>
+      <th>sex</th>
+      <th>age</th>
+      <th>sibsp</th>
+      <th>parch</th>
+      <th>ticket</th>
+      <th>fare</th>
+      <th>embarked</th>
+      <th>age_category</th>
+      <th>freq</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>159</th>
+      <td>0</td>
+      <td>3</td>
+      <td>Sage, Master. Thomas Henry</td>
+      <td>male</td>
+      <td>38.2334</td>
+      <td>8</td>
+      <td>2</td>
+      <td>CA. 2343</td>
+      <td>69.5500</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>180</th>
+      <td>0</td>
+      <td>3</td>
+      <td>Sage, Miss. Constance Gladys</td>
+      <td>female</td>
+      <td>38.2334</td>
+      <td>8</td>
+      <td>2</td>
+      <td>CA. 2343</td>
+      <td>69.5500</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>201</th>
+      <td>0</td>
+      <td>3</td>
+      <td>Sage, Mr. Frederick</td>
+      <td>male</td>
+      <td>38.2334</td>
+      <td>8</td>
+      <td>2</td>
+      <td>CA. 2343</td>
+      <td>69.5500</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>324</th>
+      <td>0</td>
+      <td>3</td>
+      <td>Sage, Mr. George John Jr</td>
+      <td>male</td>
+      <td>38.2334</td>
+      <td>8</td>
+      <td>2</td>
+      <td>CA. 2343</td>
+      <td>69.5500</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>792</th>
+      <td>0</td>
+      <td>3</td>
+      <td>Sage, Miss. Stella Anna</td>
+      <td>female</td>
+      <td>38.2334</td>
+      <td>8</td>
+      <td>2</td>
+      <td>CA. 2343</td>
+      <td>69.5500</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>846</th>
+      <td>0</td>
+      <td>3</td>
+      <td>Sage, Mr. Douglas Bullen</td>
+      <td>male</td>
+      <td>38.2334</td>
+      <td>8</td>
+      <td>2</td>
+      <td>CA. 2343</td>
+      <td>69.5500</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>863</th>
+      <td>0</td>
+      <td>3</td>
+      <td>Sage, Miss. Dorothy Edith "Dolly"</td>
+      <td>female</td>
+      <td>38.2334</td>
+      <td>8</td>
+      <td>2</td>
+      <td>CA. 2343</td>
+      <td>69.5500</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>0</td>
+      <td>3</td>
+      <td>Andersson, Mr. Anders Johan</td>
+      <td>male</td>
+      <td>39.0000</td>
+      <td>1</td>
+      <td>5</td>
+      <td>347082</td>
+      <td>31.2750</td>
+      <td>S</td>
+      <td>Adulto</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>119</th>
+      <td>0</td>
+      <td>3</td>
+      <td>Andersson, Miss. Ellis Anna Maria</td>
+      <td>female</td>
+      <td>2.0000</td>
+      <td>4</td>
+      <td>2</td>
+      <td>347082</td>
+      <td>31.2750</td>
+      <td>S</td>
+      <td>Criança</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>541</th>
+      <td>0</td>
+      <td>3</td>
+      <td>Andersson, Miss. Ingeborg Constanzia</td>
+      <td>female</td>
+      <td>9.0000</td>
+      <td>4</td>
+      <td>2</td>
+      <td>347082</td>
+      <td>31.2750</td>
+      <td>S</td>
+      <td>Criança</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
 
 Nas *Tabelas 9 a 11* mostram as passagens com maior número de passageiros por classe. A primeira classe a passagem com o maior número de pessoas tem 4, a grande maioria sobreviveu ao naufrágio. A terceira classe, possuíam mais de uma passagem com 7 passageiros sendo que todos faleceram, porém em pesquisas online pelo nome de família consta que o banco de dados não contem todo o registro da família Sage, sendo que o total eram de 11 passageiros na mesma passagem.
+
+# 1.5. Conclusões e Resultados
 
 ## 1.5. Links uteis
 
