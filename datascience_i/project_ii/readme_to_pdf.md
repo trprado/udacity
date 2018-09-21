@@ -102,39 +102,39 @@ A *Tabela 1* demonstra que a grande maioria dos sobreviventes do naufrágio do T
 
 A *Figura 1* ajuda a esclarecer visualmente a porcentagem de sobreviventes entre cada categoria e sua classe de passageiro.
 
-**Figura 1** - Gráfico de sobreviventes por classe e categoria de idade.
+<!-- **Figura 1** - Gráfico de sobreviventes por classe e categoria de idade. -->
 
 ![Gráfico de Sobreviventes por classe e categoria de idade.](imgs/g1-survived-class-by-age-cotegory.png)
 
-**Figura 2** - Gráfico de contagem de passageiros por classe e categoria de idade.
+<!-- **Figura 2** - Gráfico de contagem de passageiros por classe e categoria de idade. -->
 
 ![Gráfico de contagem de passageiros por classe e categoria de idade.](imgs/g2-count-class-by-age-cotegory.png)
 
 Na *Figura 2* observa-se que a população de passageiros era constituída, na maior parte, por adultos. Para todas as categorias de idade, observa-se maior discrepância de valores na terceira classe em relação as demais. Observa-se ainda que a população de crianças na primeira classe foi a menor entre as classes.
 
-**Figura 3** - Gráfico de caixa de categoria de idade por classe.
+<!-- **Figura 3** - Gráfico de caixa de categoria de idade por classe. -->
 
 ![Gráfico de caixa de categoria de idade por classe.](imgs/g3-box-class-by-age-cotegory.png)
 
 O mesmo é observado na *Figura 3*, com informações adicionais de que existem outliers na categoria adultos em todas as classes (*Figura 11*). Observa-se também que existe pouca variabilidade dentro das categorias, exceto para criança na primeira e terceira classe, adolescente na segunda classe e adultos na terceira classe.
 
-**Figura 4** - Gráfico de caixa entre idade de passageiros adultos e classe social.
+<!-- **Figura 4** - Gráfico de caixa entre idade de passageiros adultos e classe social. -->
 
 ![Gráfico de caixa entre idade de passageiros adultos e classe social.](imgs/g8-box-adult-age-by-social.png)
 
-**Figura 5** - Gráfico de frequência da primeira classe.
+<!-- **Figura 5** - Gráfico de frequência da primeira classe. -->
 
 ![Gráfico de frequência da primeira classe.](imgs/g11-hist-age-first-class.png)
 
 O primeiro gráfico de frequência  *Figura 5* apresenta uma distribuição simétrica e a maior frequência observada é de adultos com idade variando de 35 a 40 anos.
 
-**Figura 6** - Gráfico de frequência da segunda classe.
+<!-- **Figura 6** - Gráfico de frequência da segunda classe. -->
 
 ![Gráfico de frequência da segunda classe.](imgs/g12-hist-age-second-class.png)
 
 No segundo e terceiro gráficos de frequência, Figuras 6 e 7, observam-se assimetrias positivas, sendo que no terceiro gráfico a maior frequência de idade varia de 35 a 40 anos e pertence a categoria adulta.
 
-**Figura 7** - Gráfico de frequência da terceira classe.
+<!-- **Figura 7** - Gráfico de frequência da terceira classe. -->
 
 ![Gráfico de frequência da terceira classe.](imgs/g13-hist-age-third-class.png)
 
@@ -151,7 +151,7 @@ No segundo e terceiro gráficos de frequência, Figuras 6 e 7, observam-se assim
 
 A *Tabela 2* mostra que existe mais homens e mulheres na terceira classe, como observado anteriormente nas *Figuras 2 e 8*. A maioria dos sobreviventes são do gênero feminino, *Tabela 4*, sendo que a primeira e segunda classe quase todas as passageiras sobreviveram. Esses dados podem ser reafirmados pela *Figura 8*, que mostra a contagem de passageiros a bordo, com uma discrepância de passageiros do gênero masculino na terceira classe.
 
-**Figura 8** - Gráfico de contagem de passageiros por classe e gênero.
+<!-- **Figura 8** - Gráfico de contagem de passageiros por classe e gênero. -->
 
 ![Gráfico de contagem de passageiros por classe e gênero.](imgs/g4-count-passengers-class.png)
 
@@ -165,7 +165,7 @@ A *Tabela 2* mostra que existe mais homens e mulheres na terceira classe, como o
 
 A *Tabela 3* demonstra que a grande maioria, com o dobro de passageiros da primeira classe pertencia a terceira classe, porém aproximadamente 1/4 sobreviveu, enquanto a primeira classe teve uma sobrevivência maior que 50%.
 
-**Figura 9** - Contagem de passageiros por classe.
+<!-- **Figura 9** - Contagem de passageiros por classe. -->
 
 ![Contagem de passageiros por classe.](imgs/g5-count-passenger-class.png)
 
@@ -178,7 +178,7 @@ A *Tabela 3* demonstra que a grande maioria, com o dobro de passageiros da prime
 
 A *Tabela 4* demonstra que os passageiros eram majoritariamente do gênero masculino, como também é observado na *Figura 10*, com maior sobrevivência de pessoas do gênero feminino. O que indica que mulheres tiveram uma maior taxa de sobrevivência comparado a homens, o que é esperado em um acidente dessas proporções.
 
-**Figura 10** - Contagem de pessoas por gênero.
+<!-- **Figura 10** - Contagem de pessoas por gênero. -->
 
 ![Contagem de pessoas por gênero.](imgs/g6-count-people-by-gender.png)
 
@@ -192,7 +192,7 @@ A *Tabela 4* demonstra que os passageiros eram majoritariamente do gênero mascu
 
 A grande maioria dos passageiros era da categoria adulta, com a minoria sendo de crianças e adolescentes (*Figura 11*). Os adultos tiveram a maior taxa de morte devido seu maior número, porém mais de 50% dos adolescentes faleceram no naufrágio, no total 57,97% das crianças, 37,52% dos adultos e 42,86% dos adolescentes sobreviveram como pode ser observado na *Tabela 5*. Assim a maior taxa de sobrevivência não é de adultos e sim de crianças, com quase 58% de sobrevivência.
 
-**Figura 11** - Contagem de pessoas por categoria de idade.
+<!-- **Figura 11** - Contagem de pessoas por categoria de idade. -->
 
 ![Contagem de pessoas por categoria de idade.](imgs/g7-count-pearson-by-age-category.png)
 
@@ -239,11 +239,11 @@ A tabela 7 é uma descritiva dos passageiros agrupada por categoria de idade
 
 Na *Tabela 8* podemos ver uma separação dos valores médios das passagens em cada posto de embarque do Titanic. Sendo C (Cherbourg), Q (Queenstown) e S (Southampton). As passagens mais caras da primeira classe foram compradas em Cherbourg (*Figura 13*), totalizando 168 passageiros sendo a maioria da primeira classe (Figura 12), sendo que em Southampton apresentou um maior movimento de passageiros. Houve pouquíssimos embarques da primeira e segunda classe em Queenstown, cinco passageiros apenas. Pela *Figura 12* pode-se observar que existem outliers com relação ao valor da passagem, como existem passagens com valores altos que permitiam entrada de mais de um passageiro. Como o banco de dados possuía dados faltantes, suspeita-se que esses outliers sejam passagens que abrangem mais passageiros que não estavam contidos no dataset.
 
-**Figura 12** - Gráfico de caixa entre classe de passageiros e taxa da passagem.
+<!-- **Figura 12** - Gráfico de caixa entre classe de passageiros e taxa da passagem. -->
 
 ![Gráfico de caixa entre classe de passageiros e taxa da passagem.](imgs/g9-box-class-by-ticket-fare.png)
 
-**Figura 13** - Gráfico de barra com local de embarque e classe do passageiro.
+<!-- **Figura 13** - Gráfico de barra com local de embarque e classe do passageiro. -->
 
 ![Gráfico de barra com local de embarque e classe do passageiro.](imgs/g10-bar-embarked-by-class.png)
 

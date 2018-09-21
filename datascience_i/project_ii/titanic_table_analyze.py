@@ -30,7 +30,7 @@ class_sum = df_1['survived'].sum()
 df_1.loc['total'] = np.array(['-','-',class_sum])
 df_1['survived'] = df_1['survived'].astype(int)
 df_1.to_csv('tables/t_1.csv', index=False)
-print('Tabela1: Passageiros por classe com total de indivíduos por categoria de idade e sobreviventes da categoria.')
+print('Tabela1: Passageiros por classe social, total de indivíduos por categoria de idade e sobreviventes da categoria.')
 print(df_1, '\n')
 
 # Tabela 2: Passageiros por classe, total de indivíduos por sexo e

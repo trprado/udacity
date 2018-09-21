@@ -1,0 +1,1080 @@
+<h1 id="projeto-ii---fundamentos-data-science-i">1. Projeto II - Fundamentos Data Science I</h1>
+<!-- TOC -->
+<ul>
+<li><a href="#1-projeto-ii---fundamentos-data-science-i">1. Projeto II - Fundamentos Data Science I</a>
+<ul>
+<li><a href="#11-notas">1.1. Notas</a></li>
+<li><a href="#12-perguntas-feitas">1.2. Perguntas Feitas</a></li>
+<li><a href="#13-limpeza-dos-dados">1.3. Limpeza dos dados</a></li>
+<li><a href="#14-analises-e-resultados">1.4. Analises e Resultados</a></li>
+<li><a href="#15-links-uteis">1.5. Links uteis</a></li>
+</ul></li>
+</ul>
+<!-- /TOC -->
+<h2 id="notas">1.1. Notas</h2>
+<p>Todas as analises aqui presentes são resultados do dataset disponibilizado pelo curso de Fundamentos de Data Science I da Udacity. Essas analises são feitas de forma descritiva, apenas para estudo e não devem ser considerados como resultados fieis, para tal devem serem feitas outras analises e recomenda-se a utilização do método baseados em deep learning para definir corretamente os valores faltantes, que podem ser oriundos de erros humanos.</p>
+<ul>
+<li>O dataset utilizado foi titanic-data-6.csv e sua versão editada titanic_edited.csv</li>
+<li>As <a href="#12-perguntas-feitas">perguntas feitas</a> estão na seção seguinte.</li>
+<li>As informações sobre a limpeza dos dados estão na seção <a href="#13-limpeza-dos-dados">1.3</a>.</li>
+<li>As análises e resultados finais se encontram na seção <a href="#14-analises-e-resultados">1.4</a>.</li>
+<li>A ultima seção <a href="#15-links-uteis">1.5</a> contem links uteis de sites com informações que me ajudaram a completar o projeto.</li>
+</ul>
+<h2 id="perguntas-feitas">1.2. Perguntas Feitas</h2>
+<ul>
+<li>De que forma é composto o banco de dados. Quais são as classes das variáveis? Existem informações faltantes?
+<ul>
+<li>Para o tratamento dos dados e fazer a analise é necessário obter essas informações e saber a existem de valores discrepantes.</li>
+</ul></li>
+<li>Quais são as medidas descritivas? Qual é a contagem total para os dois gêneros? Qual é a contagem dos gêneros por classe? Como são distribuídos os passageiros por classe e por categoria de idade? Qual é a idade média dos passageiros por classe? Existem diferenças entre as idades médias dos passageiros por categoria de idade para cada classe? Existem diferenças entre as categorias de idade? Qual foi o preço médio pago por passagem, por classe e por porto de embarcação?
+<ul>
+<li>Essas perguntas são importantes para analisar o perfil dos passageiros. Espera-se que existam diferenças significativas entre as classes, principalmente entre as classes extremas, primeira e terceira. É sabido que o Titanic foi de grande sucesso devido a propaganda luxuosa feita pela mídia e que essa fatídica viagem era a primeira com ele, devido a isso, espera-se que houvessem muitos passageiros da primeira classe embarcados.</li>
+</ul></li>
+<li>Será que mulheres e crianças possuem a maior taxa de sobrevivência no naufrágio? Por classe, qual foi a diferença de frequência da categoria de idade entre os sobreviventes e qual a relação disso pelo número total de passageiros, por classe e geral?
+<ul>
+<li>Como é esperado em acidentes, mulheres e crianças possuem preferencial no momento de fuga. Historicamente, sabe-se que muitos barcos de fuga foram lançados ao mar com pouquíssimas pessoas neles, portanto há interesse em saber se houve alguma diferença no número de sobreviventes entre cada classe e quantas pessoas sobreviveram no geral.</li>
+</ul></li>
+<li>A quantidade de adulto em cada classe?
+<ul>
+<li>Com a separação entre as três classes de passageiro e as categorias de idade, é possível investigar qual a probabilidade de se estar em qualquer uma das classes.</li>
+</ul></li>
+<li><p>A frequência de pessoas de diversas idades no Titanic e sua classe.</p></li>
+<li>A frequência de adultos em comparação as demais categorias de idade no barco.
+<ul>
+<li>A possibilidade de que existem mais adultos que as demais categorias é clara, mas e sua frequência em comparação as demais.</li>
+</ul></li>
+<li>Quais portos tem maior taxa de embarque e quais portos tem as menores taxas.
+<ul>
+<li>Agrupando as passagens, seus valores e o local de embarque é possível se ter a media dos portos que tiveram maior e menor taxa de embarque, como também a contagem de passageiros que cada porto recebeu no embarque do Titanic.</li>
+</ul></li>
+<li>Quais classes sociais tem os maiores números de pessoas por passagem.
+<ul>
+<li>Um agrupamento das passagens e contagem de nomes que fazem parte pode permitir descobrir quais passagens possuem uma maior quantidade de pessoas.</li>
+</ul></li>
+</ul>
+<h2 id="limpeza-dos-dados">1.3. Limpeza dos dados</h2>
+<p>O programa responsável por fazer a limpeza dos dados é o arquivo <code>titanic_dataset_edit.py</code>, ele é responsável por fazer a maioria das modificações. Algumas modificações o programa não irá fazer pois foi necessário manter os dados no estado correto.</p>
+<ul>
+<li>Primeiro o programa apresenta as colunas, seus tipos e quantidade de dados que cada coluna possui. Com isso podemos analisar colunas com valores faltantes e colunas que não irão ser uteis para o projeto;</li>
+<li>Em seguida e verificada quantos itens únicos cada coluna tem;</li>
+<li>As colunas <code>PassengerId</code> e <code>Cabin</code> são removidas. A primeira contém apenas um índice que já é gerado ao se carregar o csv, a segunda tem apenas o código de cada cabine onde o passageiro dormiu e não é útil para as analises;</li>
+<li>A coluna <code>Pclass</code> é renomeada para <code>passenger_class</code> para melhorar a visualização, demais nomes são mantidos;</li>
+<li>Todas as colunas são renomeadas para ficaram em letras em minúsculo e alterar a separação entre palavras para sublinhado. Em seguida os nomes são revisados para verificar se estão corretos;</li>
+<li>É contado quantos valores de idade nulos existem por classe de passagem, é feito o calculo da média e aplicada a esses valores em branco para terem uma estimativa da idade;</li>
+<li>É criada uma nova coluna com a categoria da idade de cada passageiro, sendo: <code>Crianças</code> para pessoas com menos de 12 anos, <code>Adolescente</code> para pessoas com mais de 12 anos e menos de 18 anos e <code>Adulto</code> para todos que tiverem idade maior que 18 anos;</li>
+<li>Ao final é gerado um novo dataset contendo os registros editados.</li>
+<li>No programa que gera as tabelas, uma nova coluna temporária foi adiciona representando a frequência de indivíduos em uma passagem.</li>
+</ul>
+<h2 id="analises-e-resultados">1.4. Analises e Resultados</h2>
+<p><strong>Tabela 1</strong> - Passageiros por classe social, total de indivíduos por categoria de idade e sobreviventes da categoria.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">passenger_class</th>
+<th>age_category</th>
+<th style="text-align: center;">survived</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td>Adolescente</td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td>Adulto</td>
+<td style="text-align: center;">122</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td>Criança</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td>Adolescente</td>
+<td style="text-align: center;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td>Adulto</td>
+<td style="text-align: center;">64</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td>Criança</td>
+<td style="text-align: center;">17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td>Adolescente</td>
+<td style="text-align: center;">13</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td>Adulto</td>
+<td style="text-align: center;">86</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td>Criança</td>
+<td style="text-align: center;">20</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">total</td>
+<td>-</td>
+<td style="text-align: center;">342</td>
+</tr>
+</tbody>
+</table>
+<pre><code>Total de passageiros por classe:
+Total de pessoas da 1(a) classe no titanic: 216.
+Total de pessoas da 2(a) classe no titanic: 184.
+Total de pessoas da 3(a) classe no titanic: 491.
+Total de sobreviventes: 891.
+
+Porcentagem de sobreviventes por classe:
+Porcentagem de sobreviventes da 1(a) classe: 62.96%.
+Porcentagem de sobreviventes da 2(a) classe: 47.28%.
+Porcentagem de sobreviventes da 3(a) classe: 24.24%.
+Porcentagem de sobreviventes do naufrágio: 38.38%.
+
+Porcentagem por classes de sobreviventes:
+Porcentagem da 1(a) classe: 39.77%.
+Porcentagem da 2(a) classe: 25.44%.
+Porcentagem da 3(a) classe: 34.80%.
+Total de sobreviventes: 342.</code></pre>
+<p>A <em>Tabela 1</em> demonstra que a grande maioria dos sobreviventes do naufrágio do Titanic, em todas as classes de passageiros, são adultos, sendo a grande maioria pertencentes a primeira classe. Esses dados consideram que 30 pessoas não identificadas da primeira classe são da categoria adulta, por intermédio da substituição dos Nas pela de média entre a quantidade de passageiros dessa classe. Ainda sabemos que o total desses sobreviventes somam 342 passageiros.</p>
+<p>A <em>Figura 1</em> ajuda a esclarecer visualmente a porcentagem de sobreviventes entre cada categoria e sua classe de passageiro.</p>
+<!-- **Figura 1** - Gráfico de sobreviventes por classe e categoria de idade. -->
+<figure>
+<img src="imgs/g1-survived-class-by-age-cotegory.png" alt="Gráfico de Sobreviventes por classe e categoria de idade." /><figcaption>Gráfico de Sobreviventes por classe e categoria de idade.</figcaption>
+</figure>
+<!-- **Figura 2** - Gráfico de contagem de passageiros por classe e categoria de idade. -->
+<figure>
+<img src="imgs/g2-count-class-by-age-cotegory.png" alt="Gráfico de contagem de passageiros por classe e categoria de idade." /><figcaption>Gráfico de contagem de passageiros por classe e categoria de idade.</figcaption>
+</figure>
+<p>Na <em>Figura 2</em> observa-se que a população de passageiros era constituída, na maior parte, por adultos. Para todas as categorias de idade, observa-se maior discrepância de valores na terceira classe em relação as demais. Observa-se ainda que a população de crianças na primeira classe foi a menor entre as classes.</p>
+<!-- **Figura 3** - Gráfico de caixa de categoria de idade por classe. -->
+<figure>
+<img src="imgs/g3-box-class-by-age-cotegory.png" alt="Gráfico de caixa de categoria de idade por classe." /><figcaption>Gráfico de caixa de categoria de idade por classe.</figcaption>
+</figure>
+<p>O mesmo é observado na <em>Figura 3</em>, com informações adicionais de que existem outliers na categoria adultos em todas as classes (<em>Figura 11</em>). Observa-se também que existe pouca variabilidade dentro das categorias, exceto para criança na primeira e terceira classe, adolescente na segunda classe e adultos na terceira classe.</p>
+<!-- **Figura 4** - Gráfico de caixa entre idade de passageiros adultos e classe social. -->
+<figure>
+<img src="imgs/g8-box-adult-age-by-social.png" alt="Gráfico de caixa entre idade de passageiros adultos e classe social." /><figcaption>Gráfico de caixa entre idade de passageiros adultos e classe social.</figcaption>
+</figure>
+<!-- **Figura 5** - Gráfico de frequência da primeira classe. -->
+<figure>
+<img src="imgs/g11-hist-age-first-class.png" alt="Gráfico de frequência da primeira classe." /><figcaption>Gráfico de frequência da primeira classe.</figcaption>
+</figure>
+<p>O primeiro gráfico de frequência <em>Figura 5</em> apresenta uma distribuição simétrica e a maior frequência observada é de adultos com idade variando de 35 a 40 anos.</p>
+<!-- **Figura 6** - Gráfico de frequência da segunda classe. -->
+<figure>
+<img src="imgs/g12-hist-age-second-class.png" alt="Gráfico de frequência da segunda classe." /><figcaption>Gráfico de frequência da segunda classe.</figcaption>
+</figure>
+<p>No segundo e terceiro gráficos de frequência, Figuras 6 e 7, observam-se assimetrias positivas, sendo que no terceiro gráfico a maior frequência de idade varia de 35 a 40 anos e pertence a categoria adulta.</p>
+<!-- **Figura 7** - Gráfico de frequência da terceira classe. -->
+<figure>
+<img src="imgs/g13-hist-age-third-class.png" alt="Gráfico de frequência da terceira classe." /><figcaption>Gráfico de frequência da terceira classe.</figcaption>
+</figure>
+<p><strong>tabela 2</strong> - Passageiros por classe, total de indivíduos por sexo e sobreviventes da categoria.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">passenger_class</th>
+<th>sex</th>
+<th style="text-align: center;">total</th>
+<th style="text-align: center;">survived</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td>female</td>
+<td style="text-align: center;">94</td>
+<td style="text-align: center;">91</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td>male</td>
+<td style="text-align: center;">122</td>
+<td style="text-align: center;">45</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td>female</td>
+<td style="text-align: center;">76</td>
+<td style="text-align: center;">70</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td>male</td>
+<td style="text-align: center;">108</td>
+<td style="text-align: center;">17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td>female</td>
+<td style="text-align: center;">144</td>
+<td style="text-align: center;">72</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td>male</td>
+<td style="text-align: center;">347</td>
+<td style="text-align: center;">47</td>
+</tr>
+</tbody>
+</table>
+<p>A <em>Tabela 2</em> mostra que existe mais homens e mulheres na terceira classe, como observado anteriormente nas <em>Figuras 2 e 8</em>. A maioria dos sobreviventes são do gênero feminino, <em>Tabela 4</em>, sendo que a primeira e segunda classe quase todas as passageiras sobreviveram. Esses dados podem ser reafirmados pela <em>Figura 8</em>, que mostra a contagem de passageiros a bordo, com uma discrepância de passageiros do gênero masculino na terceira classe.</p>
+<!-- **Figura 8** - Gráfico de contagem de passageiros por classe e gênero. -->
+<figure>
+<img src="imgs/g4-count-passengers-class.png" alt="Gráfico de contagem de passageiros por classe e gênero." /><figcaption>Gráfico de contagem de passageiros por classe e gênero.</figcaption>
+</figure>
+<p><strong>Tabela 3</strong> - Contagem de passageiros por classe e sobreviventes.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">passenger_class</th>
+<th style="text-align: center;">total</th>
+<th style="text-align: center;">survived</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: center;">216</td>
+<td style="text-align: center;">136</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: center;">184</td>
+<td style="text-align: center;">87</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: center;">491</td>
+<td style="text-align: center;">119</td>
+</tr>
+</tbody>
+</table>
+<p>A <em>Tabela 3</em> demonstra que a grande maioria, com o dobro de passageiros da primeira classe pertencia a terceira classe, porém aproximadamente 1/4 sobreviveu, enquanto a primeira classe teve uma sobrevivência maior que 50%.</p>
+<!-- **Figura 9** - Contagem de passageiros por classe. -->
+<figure>
+<img src="imgs/g5-count-passenger-class.png" alt="Contagem de passageiros por classe." /><figcaption>Contagem de passageiros por classe.</figcaption>
+</figure>
+<p><strong>Tabela 4</strong> - Total de indivíduos por gênero e sobreviventes.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">sex</th>
+<th style="text-align: center;">total</th>
+<th style="text-align: center;">survived</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">female</td>
+<td style="text-align: center;">314</td>
+<td style="text-align: center;">233</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">male</td>
+<td style="text-align: center;">577</td>
+<td style="text-align: center;">109</td>
+</tr>
+</tbody>
+</table>
+<p>A <em>Tabela 4</em> demonstra que os passageiros eram majoritariamente do gênero masculino, como também é observado na <em>Figura 10</em>, com maior sobrevivência de pessoas do gênero feminino. O que indica que mulheres tiveram uma maior taxa de sobrevivência comparado a homens, o que é esperado em um acidente dessas proporções.</p>
+<!-- **Figura 10** - Contagem de pessoas por gênero. -->
+<figure>
+<img src="imgs/g6-count-people-by-gender.png" alt="Contagem de pessoas por gênero." /><figcaption>Contagem de pessoas por gênero.</figcaption>
+</figure>
+<p><strong>Tabela 5</strong> - Contagem de pessoas por categoria de idade e sobreviventes</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">age_category</th>
+<th style="text-align: center;">total</th>
+<th style="text-align: center;">survived</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Adolescente</td>
+<td style="text-align: center;">70</td>
+<td style="text-align: center;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Adulto</td>
+<td style="text-align: center;">752</td>
+<td style="text-align: center;">272</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Criança</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">40</td>
+</tr>
+</tbody>
+</table>
+<p>A grande maioria dos passageiros era da categoria adulta, com a minoria sendo de crianças e adolescentes (<em>Figura 11</em>). Os adultos tiveram a maior taxa de morte devido seu maior número, porém mais de 50% dos adolescentes faleceram no naufrágio, no total 57,97% das crianças, 37,52% dos adultos e 42,86% dos adolescentes sobreviveram como pode ser observado na <em>Tabela 5</em>. Assim a maior taxa de sobrevivência não é de adultos e sim de crianças, com quase 58% de sobrevivência.</p>
+<!-- **Figura 11** - Contagem de pessoas por categoria de idade. -->
+<figure>
+<img src="imgs/g7-count-pearson-by-age-category.png" alt="Contagem de pessoas por categoria de idade." /><figcaption>Contagem de pessoas por categoria de idade.</figcaption>
+</figure>
+<p><strong>Tabela 6</strong> - Descritiva da categoria de idade dos passageiros.</p>
+<table>
+<thead>
+<tr class="header">
+<th>age_category</th>
+<th>count</th>
+<th>mean</th>
+<th>std</th>
+<th>min</th>
+<th>25%</th>
+<th>50%</th>
+<th>75%</th>
+<th>max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Adolescente</td>
+<td>70.0</td>
+<td>16.57857142857143</td>
+<td>1.4386882972218642</td>
+<td>13.0</td>
+<td>16.0</td>
+<td>17.0</td>
+<td>18.0</td>
+<td>18.0</td>
+</tr>
+<tr class="even">
+<td>Adulto</td>
+<td>752.0</td>
+<td>35.21651467055594</td>
+<td>10.613821418618652</td>
+<td>19.0</td>
+<td>27.0</td>
+<td>36.0</td>
+<td>38.233440860215055</td>
+<td>80.0</td>
+</tr>
+<tr class="odd">
+<td>Criança</td>
+<td>69.0</td>
+<td>4.770579710144927</td>
+<td>3.390390348885739</td>
+<td>0.42</td>
+<td>2.0</td>
+<td>4.0</td>
+<td>8.0</td>
+<td>12.0</td>
+</tr>
+</tbody>
+</table>
+<p>A <em>Tabela 6</em> mostra a descritiva das categorias de idade, No geral, a idade média dos adolescentes é de, aproximadamente, 17 anos (desvio de 1.44), mínimo de 13 anos e máximo de 18 anos; os adultos possuem, aproximadamente, 35 anos (desvio de 10.61), com mínimo de 19 anos e máximo de 80 anos; e as crianças possuem a idade média de, aproximadamente, 5 anos (desvio de 3.39), com mínimo de 0.42 meses e máximo de 12 anos. A <em>Tabela 7</em> separa a descritiva das categorias de idade entre as classes de passageiro, por ela é possível verificar que adultos da primeira classe são os mais velhos, com idade media de 40 anos, já adolescentes tem pouca variação na média de idade por classe, assim como na categoria infantil.</p>
+<p><strong>Tabela 7</strong> - Descritiva da categoria de idade dos passageiros por classe.</p>
+<table>
+<thead>
+<tr class="header">
+<th>age_category</th>
+<th>passenger_class</th>
+<th>count</th>
+<th>mean</th>
+<th>std</th>
+<th>min</th>
+<th>25%</th>
+<th>50%</th>
+<th>75%</th>
+<th>max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Adolescente</td>
+<td>1</td>
+<td>12.0</td>
+<td>16.666666666666668</td>
+<td>1.3026778945578592</td>
+<td>14.0</td>
+<td>16.0</td>
+<td>17.0</td>
+<td>18.0</td>
+<td>18.0</td>
+</tr>
+<tr class="even">
+<td>Adolescente</td>
+<td>2</td>
+<td>12.0</td>
+<td>16.75</td>
+<td>1.712255291076124</td>
+<td>13.0</td>
+<td>16.0</td>
+<td>17.5</td>
+<td>18.0</td>
+<td>18.0</td>
+</tr>
+<tr class="odd">
+<td>Adolescente</td>
+<td>3</td>
+<td>46.0</td>
+<td>16.51086956521739</td>
+<td>1.423958217375397</td>
+<td>13.0</td>
+<td>16.0</td>
+<td>17.0</td>
+<td>18.0</td>
+<td>18.0</td>
+</tr>
+<tr class="even">
+<td>Adulto</td>
+<td>1</td>
+<td>200.0</td>
+<td>40.20251612903226</td>
+<td>12.184442955973504</td>
+<td>19.0</td>
+<td>31.75</td>
+<td>38.233440860215055</td>
+<td>48.0</td>
+<td>80.0</td>
+</tr>
+<tr class="odd">
+<td>Adulto</td>
+<td>2</td>
+<td>155.0</td>
+<td>34.3810828997572</td>
+<td>10.599676082201874</td>
+<td>19.0</td>
+<td>27.0</td>
+<td>32.5</td>
+<td>39.0</td>
+<td>70.0</td>
+</tr>
+<tr class="even">
+<td>Adulto</td>
+<td>3</td>
+<td>397.0</td>
+<td>33.030851277051006</td>
+<td>8.81627325913373</td>
+<td>19.0</td>
+<td>25.0</td>
+<td>36.0</td>
+<td>38.233440860215055</td>
+<td>74.0</td>
+</tr>
+<tr class="odd">
+<td>Criança</td>
+<td>1</td>
+<td>4.0</td>
+<td>4.48</td>
+<td>4.530077262034281</td>
+<td>0.92</td>
+<td>1.73</td>
+<td>3.0</td>
+<td>5.75</td>
+<td>11.0</td>
+</tr>
+<tr class="even">
+<td>Criança</td>
+<td>2</td>
+<td>17.0</td>
+<td>3.4899999999999998</td>
+<td>2.5219659989777816</td>
+<td>0.67</td>
+<td>1.0</td>
+<td>3.0</td>
+<td>5.0</td>
+<td>8.0</td>
+</tr>
+<tr class="odd">
+<td>Criança</td>
+<td>3</td>
+<td>48.0</td>
+<td>5.248333333333334</td>
+<td>3.510292667275633</td>
+<td>0.42</td>
+<td>2.0</td>
+<td>4.0</td>
+<td>9.0</td>
+<td>12.0</td>
+</tr>
+</tbody>
+</table>
+<p>A tabela 7 é uma descritiva dos passageiros agrupada por categoria de idade</p>
+<p><strong>Tabela 8</strong> - Média de valor da passagem por local de embarque e sua classe.</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">passenger_class</th>
+<th style="text-align: center;">embarked</th>
+<th>fare_mean</th>
+<th style="text-align: left;">total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: center;">C</td>
+<td>104.71852941176469</td>
+<td style="text-align: left;">85</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: center;">Q</td>
+<td>90.0</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: center;">S</td>
+<td>70.36486220472443</td>
+<td style="text-align: left;">127</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: center;">C</td>
+<td>25.358335294117644</td>
+<td style="text-align: left;">17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: center;">Q</td>
+<td>12.35</td>
+<td style="text-align: left;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: center;">S</td>
+<td>20.327439024390245</td>
+<td style="text-align: left;">164</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: center;">C</td>
+<td>11.214083333333337</td>
+<td style="text-align: left;">66</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: center;">Q</td>
+<td>11.183393055555557</td>
+<td style="text-align: left;">72</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: center;">S</td>
+<td>14.64408300283288</td>
+<td style="text-align: left;">353</td>
+</tr>
+</tbody>
+</table>
+<p>Na <em>Tabela 8</em> podemos ver uma separação dos valores médios das passagens em cada posto de embarque do Titanic. Sendo C (Cherbourg), Q (Queenstown) e S (Southampton). As passagens mais caras da primeira classe foram compradas em Cherbourg (<em>Figura 13</em>), totalizando 168 passageiros sendo a maioria da primeira classe (Figura 12), sendo que em Southampton apresentou um maior movimento de passageiros. Houve pouquíssimos embarques da primeira e segunda classe em Queenstown, cinco passageiros apenas. Pela <em>Figura 12</em> pode-se observar que existem outliers com relação ao valor da passagem, como existem passagens com valores altos que permitiam entrada de mais de um passageiro. Como o banco de dados possuía dados faltantes, suspeita-se que esses outliers sejam passagens que abrangem mais passageiros que não estavam contidos no dataset.</p>
+<!-- **Figura 12** - Gráfico de caixa entre classe de passageiros e taxa da passagem. -->
+<figure>
+<img src="imgs/g9-box-class-by-ticket-fare.png" alt="Gráfico de caixa entre classe de passageiros e taxa da passagem." /><figcaption>Gráfico de caixa entre classe de passageiros e taxa da passagem.</figcaption>
+</figure>
+<!-- **Figura 13** - Gráfico de barra com local de embarque e classe do passageiro. -->
+<figure>
+<img src="imgs/g10-bar-embarked-by-class.png" alt="Gráfico de barra com local de embarque e classe do passageiro." /><figcaption>Gráfico de barra com local de embarque e classe do passageiro.</figcaption>
+</figure>
+<p><strong>Tabela 9</strong> - Passagens com maior número de passageiros da primeira classe.</p>
+<table>
+<thead>
+<tr class="header">
+<th>survived</th>
+<th>passenger_class</th>
+<th>name</th>
+<th>sex</th>
+<th>age</th>
+<th>sibsp</th>
+<th>parch</th>
+<th>ticket</th>
+<th>fare</th>
+<th>embarked</th>
+<th>age_category</th>
+<th>freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>“Bidois, Miss. Rosalie”</td>
+<td>female</td>
+<td>42.0</td>
+<td>0</td>
+<td>0</td>
+<td>PC 17757</td>
+<td>227.525</td>
+<td>C</td>
+<td>Adulto</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>1</td>
+<td>“Robbins, Mr. Victor”</td>
+<td>male</td>
+<td>38.233440860215055</td>
+<td>0</td>
+<td>0</td>
+<td>PC 17757</td>
+<td>227.525</td>
+<td>C</td>
+<td>Adulto</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>“Astor, Mrs. John Jacob (Madeleine Talmadge Force)”</td>
+<td>female</td>
+<td>18.0</td>
+<td>1</td>
+<td>0</td>
+<td>PC 17757</td>
+<td>227.525</td>
+<td>C</td>
+<td>Adolescente</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1</td>
+<td>“Endres, Miss. Caroline Louise”</td>
+<td>female</td>
+<td>38.0</td>
+<td>0</td>
+<td>0</td>
+<td>PC 17757</td>
+<td>227.525</td>
+<td>C</td>
+<td>Adulto</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>0</td>
+<td>1</td>
+<td>“Fortune, Mr. Charles Alexander”</td>
+<td>male</td>
+<td>19.0</td>
+<td>3</td>
+<td>2</td>
+<td>19950</td>
+<td>263.0</td>
+<td>S</td>
+<td>Adulto</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1</td>
+<td>“Fortune, Miss. Mabel Helen”</td>
+<td>female</td>
+<td>23.0</td>
+<td>3</td>
+<td>2</td>
+<td>19950</td>
+<td>263.0</td>
+<td>S</td>
+<td>Adulto</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>“Fortune, Miss. Alice Elizabeth”</td>
+<td>female</td>
+<td>24.0</td>
+<td>3</td>
+<td>2</td>
+<td>19950</td>
+<td>263.0</td>
+<td>S</td>
+<td>Adulto</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>1</td>
+<td>“Fortune, Mr. Mark”</td>
+<td>male</td>
+<td>64.0</td>
+<td>1</td>
+<td>4</td>
+<td>19950</td>
+<td>263.0</td>
+<td>S</td>
+<td>Adulto</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>“Fleming, Miss. Margaret”</td>
+<td>female</td>
+<td>38.233440860215055</td>
+<td>0</td>
+<td>0</td>
+<td>17421</td>
+<td>110.8833</td>
+<td>C</td>
+<td>Adulto</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>1</td>
+<td>“Thayer, Mr. John Borland Jr”</td>
+<td>male</td>
+<td>17.0</td>
+<td>0</td>
+<td>2</td>
+<td>17421</td>
+<td>110.8833</td>
+<td>C</td>
+<td>Adolescente</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tabela 10</strong> - Passagens com maior número de passageiros da segunda classe.</p>
+<table>
+<thead>
+<tr class="header">
+<th>survived</th>
+<th>passenger_class</th>
+<th>name</th>
+<th>sex</th>
+<th>age</th>
+<th>sibsp</th>
+<th>parch</th>
+<th>ticket</th>
+<th>fare</th>
+<th>embarked</th>
+<th>age_category</th>
+<th>freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>2</td>
+<td>“Hood, Mr. Ambrose Jr”</td>
+<td>male</td>
+<td>21.0</td>
+<td>0</td>
+<td>0</td>
+<td>S.O.C. 14879</td>
+<td>73.5</td>
+<td>S</td>
+<td>Adulto</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>2</td>
+<td>“Hickman, Mr. Stanley George”</td>
+<td>male</td>
+<td>21.0</td>
+<td>2</td>
+<td>0</td>
+<td>S.O.C. 14879</td>
+<td>73.5</td>
+<td>S</td>
+<td>Adulto</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>0</td>
+<td>2</td>
+<td>“Davies, Mr. Charles Henry”</td>
+<td>male</td>
+<td>18.0</td>
+<td>0</td>
+<td>0</td>
+<td>S.O.C. 14879</td>
+<td>73.5</td>
+<td>S</td>
+<td>Adolescente</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>2</td>
+<td>“Hickman, Mr. Leonard Mark”</td>
+<td>male</td>
+<td>24.0</td>
+<td>2</td>
+<td>0</td>
+<td>S.O.C. 14879</td>
+<td>73.5</td>
+<td>S</td>
+<td>Adulto</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>0</td>
+<td>2</td>
+<td>“Hickman, Mr. Lewis”</td>
+<td>male</td>
+<td>32.0</td>
+<td>2</td>
+<td>0</td>
+<td>S.O.C. 14879</td>
+<td>73.5</td>
+<td>S</td>
+<td>Adulto</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>2</td>
+<td>“Laroche, Miss. Simonne Marie Anne Andree”</td>
+<td>female</td>
+<td>3.0</td>
+<td>1</td>
+<td>2</td>
+<td>SC/Paris 2123</td>
+<td>41.5792</td>
+<td>C</td>
+<td>Criança</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>2</td>
+<td>“Laroche, Mrs. Joseph (Juliette Marie Louise Lafargue)”</td>
+<td>female</td>
+<td>22.0</td>
+<td>1</td>
+<td>2</td>
+<td>SC/Paris 2123</td>
+<td>41.5792</td>
+<td>C</td>
+<td>Adulto</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>2</td>
+<td>“Laroche, Mr. Joseph Philippe Lemercier”</td>
+<td>male</td>
+<td>25.0</td>
+<td>1</td>
+<td>2</td>
+<td>SC/Paris 2123</td>
+<td>41.5792</td>
+<td>C</td>
+<td>Adulto</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>0</td>
+<td>2</td>
+<td>“Hart, Mr. Benjamin”</td>
+<td>male</td>
+<td>43.0</td>
+<td>1</td>
+<td>1</td>
+<td>F.C.C. 13529</td>
+<td>26.25</td>
+<td>S</td>
+<td>Adulto</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>2</td>
+<td>“Hart, Mrs. Benjamin (Esther Ada Bloomfield)”</td>
+<td>female</td>
+<td>45.0</td>
+<td>1</td>
+<td>1</td>
+<td>F.C.C. 13529</td>
+<td>26.25</td>
+<td>S</td>
+<td>Adulto</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tabela 11</strong> - Passagens com maior número de passageiros da terceira classe.</p>
+<table>
+<thead>
+<tr class="header">
+<th>survived</th>
+<th>passenger_class</th>
+<th>name</th>
+<th>sex</th>
+<th>age</th>
+<th>sibsp</th>
+<th>parch</th>
+<th>ticket</th>
+<th>fare</th>
+<th>embarked</th>
+<th>age_category</th>
+<th>freq</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>3</td>
+<td>“Sage, Master. Thomas Henry”</td>
+<td>male</td>
+<td>38.233440860215055</td>
+<td>8</td>
+<td>2</td>
+<td>CA. 2343</td>
+<td>69.55</td>
+<td>S</td>
+<td>Adulto</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>3</td>
+<td>“Sage, Miss. Constance Gladys”</td>
+<td>female</td>
+<td>38.233440860215055</td>
+<td>8</td>
+<td>2</td>
+<td>CA. 2343</td>
+<td>69.55</td>
+<td>S</td>
+<td>Adulto</td>
+<td>7</td>
+</tr>
+<tr class="odd">
+<td>0</td>
+<td>3</td>
+<td>“Sage, Mr. Frederick”</td>
+<td>male</td>
+<td>38.233440860215055</td>
+<td>8</td>
+<td>2</td>
+<td>CA. 2343</td>
+<td>69.55</td>
+<td>S</td>
+<td>Adulto</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>3</td>
+<td>“Sage, Mr. George John Jr”</td>
+<td>male</td>
+<td>38.233440860215055</td>
+<td>8</td>
+<td>2</td>
+<td>CA. 2343</td>
+<td>69.55</td>
+<td>S</td>
+<td>Adulto</td>
+<td>7</td>
+</tr>
+<tr class="odd">
+<td>0</td>
+<td>3</td>
+<td>“Sage, Miss. Stella Anna”</td>
+<td>female</td>
+<td>38.233440860215055</td>
+<td>8</td>
+<td>2</td>
+<td>CA. 2343</td>
+<td>69.55</td>
+<td>S</td>
+<td>Adulto</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>3</td>
+<td>“Sage, Mr. Douglas Bullen”</td>
+<td>male</td>
+<td>38.233440860215055</td>
+<td>8</td>
+<td>2</td>
+<td>CA. 2343</td>
+<td>69.55</td>
+<td>S</td>
+<td>Adulto</td>
+<td>7</td>
+</tr>
+<tr class="odd">
+<td>0</td>
+<td>3</td>
+<td>“Sage, Miss. Dorothy Edith”“Dolly”&quot;&quot;</td>
+<td>female</td>
+<td>38.233440860215055</td>
+<td>8</td>
+<td>2</td>
+<td>CA. 2343</td>
+<td>69.55</td>
+<td>S</td>
+<td>Adulto</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>3</td>
+<td>“Andersson, Mr. Anders Johan”</td>
+<td>male</td>
+<td>39.0</td>
+<td>1</td>
+<td>5</td>
+<td>347082</td>
+<td>31.275</td>
+<td>S</td>
+<td>Adulto</td>
+<td>7</td>
+</tr>
+<tr class="odd">
+<td>0</td>
+<td>3</td>
+<td>“Andersson, Miss. Ellis Anna Maria”</td>
+<td>female</td>
+<td>2.0</td>
+<td>4</td>
+<td>2</td>
+<td>347082</td>
+<td>31.275</td>
+<td>S</td>
+<td>Criança</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>3</td>
+<td>“Andersson, Miss. Ingeborg Constanzia”</td>
+<td>female</td>
+<td>9.0</td>
+<td>4</td>
+<td>2</td>
+<td>347082</td>
+<td>31.275</td>
+<td>S</td>
+<td>Criança</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+<p>Nas <em>Tabelas 9 a 11</em> mostram as passagens com maior número de passageiros por classe. A primeira classe a passagem com o maior número de pessoas tem 4, a grande maioria sobreviveu ao naufrágio. A terceira classe, possuíam mais de uma passagem com 7 passageiros sendo que todos faleceram, porém em pesquisas online pelo nome de família consta que o banco de dados não contem todo o registro da família Sage, sendo que o total eram de 11 passageiros na mesma passagem.</p>
+<h2 id="links-uteis">1.5. Links uteis</h2>
+<ul>
+<li><a href="https://stackoverflow.com/questions/31594549/how-do-i-change-the-figure-size-for-a-seaborn-plot/31597278">Change Figure Size</a></li>
+<li><a href="https://stackoverflow.com/questions/33616557/barplot-savefig-returning-an-attributeerror">Save Figure in Seaborn</a></li>
+<li><a href="https://www.kaggle.com/princeashburton/plotting-with-seaborn">Ploting with Seaborn</a></li>
+<li><a href="https://towardsdatascience.com/histograms-and-density-plots-in-python-f6bda88f5ac0">Histograms and Density Plots in Python</a></li>
+<li><a href="https://github.com/mwaskom/seaborn/issues/568">Adjust Ticks in Seaborn</a></li>
+<li><a href="https://donatstudios.com/CsvToMarkdownTable">CSV to Markdown</a></li>
+<li><a href="https://seaborn.pydata.org/tutorial.html">Seaborn Tutorial</a></li>
+<li><a href="https://matplotlib.org/contents.html">Matplotlib Docs</a></li>
+<li><a href="https://pandas.pydata.org/pandas-docs/stable/">Pandas Doc</a></li>
+<li><a href="https://docs.scipy.org/doc/numpy/">Numpy Docs</a></li>
+<li><a href="https://www.encyclopedia-titanica.org/">Encyclopedia Titanica</a></li>
+</ul>
