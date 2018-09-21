@@ -1,14 +1,17 @@
 import numpy as np
 import pandas as pd
 
-""" Geração de tabelas e outros elementos usando do Data Set do Titanic editado 
+""" Geração de tabelas e outros elementos usando do Data Set do Titanic editado
 oferencido no curso de fundamentos de Data Science I (Udacity).
 """
 
 # Algumas analises não foram feitas devido ao banco de dados ser cortado, onde
-# poderiamos verificar as informação familiares pelas colunas SibSp e Parch, 
+# poderiamos verificar as informação familiares pelas colunas SibSp e Parch,
 # existem informações de pessoas com acompanhantes mas não existem estes acompa-
 # nhantes no banco de dados.
+
+# Formata os ponto flutuantes para quatro casas decimais.
+pd.set_option('display.float_format', '{:.4f}'.format)
 
 df_titanic = pd.read_csv('titanic_edited.csv')
 
@@ -19,7 +22,7 @@ print(df_titanic.head(5))
 print('Colunas: ', *(x for x in df_titanic.columns[1:]), sep=' | ')
 print()
 
-# Tabela 1: Passageiros por classe social, total de indivíduos por categoria de 
+# Tabela 1: Passageiros por classe social, total de indivíduos por categoria de
 # idade e sobreviventes da categoria.
 df_1 = df_titanic.query('survived == 1').groupby(
     ['passenger_class', 'age_category'])['survived'].count().reset_index()
@@ -30,7 +33,7 @@ df_1.to_csv('tables/t_1.csv', index=False)
 print('Tabela1: Passageiros por classe com total de indivíduos por categoria de idade e sobreviventes da categoria.')
 print(df_1, '\n')
 
-# Tabela 2: Passageiros por classe, total de indivíduos por sexo e 
+# Tabela 2: Passageiros por classe, total de indivíduos por sexo e
 # sobrevivementes da categoria.
 df_2 = df_titanic.groupby(['passenger_class', 'sex']).agg(
     {'name':'count', 'survived':'sum'}).rename(
@@ -54,7 +57,7 @@ df_4.to_csv('tables/t_4.csv')
 print('Tabela 4: Total de indivíduos por gênero e sobreviventes.')
 print(df_4, '\n')
 
-# Tabela 5: Contagem de pessoas por categoria de idade e sobreviventes. 
+# Tabela 5: Contagem de pessoas por categoria de idade e sobreviventes.
 df_5 = df_titanic.groupby('age_category').agg(
     {'name':'count', 'survived':'sum'}).rename(columns={'name':'total'})
 df_5.to_csv('tables/t_5.csv')
@@ -104,10 +107,10 @@ print('Total de sobreviventes: {}.'.format(
 
 # Porcentagem de sobreviventes por classe.
 print('Porcentagem de sobreviventes por classe:')
-for n in range(1,4):   
+for n in range(1,4):
     print('Porcentagem de sobreviventes da {}(a) classe: {:.2%}.'.format(n,
         df_total_survived.loc[n] / df_class_total.loc[n]['survived']))
-print('Porcentagem de sobreviventes do naufragio: {:.2%}.'.format(
+print('Porcentagem de sobreviventes do naufrágio: {:.2%}.'.format(
     df_total_survived.loc['total'] / df_class_total.loc['total']['survived']), '\n')
 
 # Porcentagem por classes de sobreviventes.
@@ -123,7 +126,7 @@ print('Total de sobreviventes: {}.'.format(
 print('Descritiva do valores de todas as passagens, incluindo outliers:')
 print(df_titanic['fare'].dropna().describe(), '\n')
 
-# Descritiva dos valores de todas as passagens excluindo passagens com valor 
+# Descritiva dos valores de todas as passagens excluindo passagens com valor
 # zero.
 temp = df_titanic.query('fare != 0')
 print('Descritiva dos valores de todas as passagens excluindo passagens com valor zero:')

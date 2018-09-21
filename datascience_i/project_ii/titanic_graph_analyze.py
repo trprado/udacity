@@ -64,7 +64,7 @@ g5.savefig('imgs/g5-count-passenger-class.png')
 g6 = sns.catplot(data=df_titanic, x='sex', kind='count')
 plt.xlabel('Gênero')
 plt.ylabel('Contagem')
-plt.title('Contagem de pessoas por classe e gênero')
+plt.title('Contagem de pessoas por gênero')
 sns.despine(offset=5, trim=True)
 g6.savefig('imgs/g6-count-people-by-gender.png')
 
@@ -77,7 +77,7 @@ sns.despine(offset=5, trim=True)
 g7.savefig('imgs/g7-count-pearson-by-age-category.png')
 
 # Gráfico de caixa entre idade de passageiros adultos e classe social.
-f, g8 = plt.subplots(figsize=(8, 8))
+f, g8 = plt.subplots(figsize=(6, 6))
 sns.boxplot(x="passenger_class", y="age",
             data=df_titanic.query('age_category != "Desconhecido" & age > 18'))
 plt.ylabel('Idade')
@@ -87,7 +87,7 @@ sns.despine(offset=5, trim=True);
 g8.figure.savefig('imgs/g8-box-adult-age-by-social.png')
 
 # Gráfico de caixa entre classe de passageiros e taxa da passagem.
-f, g9 = plt.subplots(figsize=(10, 10))
+f, g9 = plt.subplots(figsize=(6, 6))
 sns.boxplot(x="passenger_class", y="fare", data=df_titanic)
 plt.ylabel('Preço Passagem')
 plt.xlabel('Classe')
@@ -107,7 +107,7 @@ g10.savefig('imgs/g10-bar-embarked-by-class.png')
 
 # Histograma idade por classe social
 # Gráfico de primeira classe.
-f, g11 = plt.subplots(figsize=(8, 8))
+f, g11 = plt.subplots(figsize=(6, 6))
 sns.distplot(df_titanic.query(
     'passenger_class == 1')['age'].astype(int), kde=False,
     hist_kws=dict(edgecolor="k", linewidth=2))
@@ -119,25 +119,25 @@ sns.despine(ax=g11, offset=5, trim=True)
 g11.figure.savefig('imgs/g11-hist-age-first-class.png')
 
 # Gráfico de segunda classe.
-f, g12 = plt.subplots(figsize=(8, 8))
+f, g12 = plt.subplots(figsize=(6, 6))
 sns.distplot(df_titanic.query(
     'passenger_class == 2')['age'].astype(int), kde=False,
     label='age_category', hist_kws=dict(edgecolor="k", linewidth=2))
 plt.xlabel('Idade')
 plt.ylabel('Frequência')
-plt.title('Frequência de passageiros da primeira classe por idade')
+plt.title('Frequência de passageiros da segunda classe por idade')
 g12.set_xticks(np.arange(0, 70, 5), minor=True)
 sns.despine(ax=g12, offset=5, trim=True)
-g12.figure.savefig('imgs/g12-hist-age-first-class.png')
+g12.figure.savefig('imgs/g12-hist-age-second-class.png')
 
 # Gráfico de terceira classe.
-f, g13 = plt.subplots(figsize=(8, 8))
+f, g13 = plt.subplots(figsize=(6, 6))
 sns.distplot(df_titanic.query(
     'passenger_class == 3')['age'].astype(int), kde=False,
     label='age_category', hist_kws=dict(edgecolor="k", linewidth=2))
 plt.xlabel('Idade')
 plt.ylabel('Frequência')
-plt.title('Frequência de passageiros da primeira classe por idade')
+plt.title('Frequência de passageiros da terceira classe por idade')
 g13.set_xticks(np.arange(0, 85, 5), minor=True)
 sns.despine(ax=g13, offset=5, trim=True)
-g13.figure.savefig('imgs/g13-hist-age-first-class.png')
+g13.figure.savefig('imgs/g13-hist-age-third-class.png')
