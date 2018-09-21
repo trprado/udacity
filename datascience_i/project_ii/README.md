@@ -124,19 +124,13 @@ O mesmo é observado na *Figura 3*, com informações adicionais de que existem 
 
 **Figura 5** - Gráfico de frequência da primeira classe.
 
-![Gráfico de frequência da primeira classe.](imgs/g11-hist-age-first-class.png)
+![Gráfico de frequência da primeira classe.](imgs/g11-hist-age-first-to-third-class.png)
 
-O primeiro gráfico de frequência  *Figura 5* apresenta uma distribuição simétrica e a maior frequência observada é de adultos com idade variando de 35 a 40 anos.
+O primeiro gráfico de frequência na *Figura 5* representando a primeira classe apresenta uma distribuição simétrica e a maior frequência observada é de adultos com idade variando de 35 a 40 anos. No segundo e terceiro gráficos de frequência da *Figura 5* observam-se assimetrias positivas, sendo que no terceiro gráfico a maior frequência de idade varia de 40 a 45 anos e pertence a categoria adulta.
 
-**Figura 6** - Gráfico de frequência da segunda classe.
+**Figura 8** - Gráfico de contagem de passageiros por classe e gênero.
 
-![Gráfico de frequência da segunda classe.](imgs/g12-hist-age-second-class.png)
-
-No segundo e terceiro gráficos de frequência, Figuras 6 e 7, observam-se assimetrias positivas, sendo que no terceiro gráfico a maior frequência de idade varia de 35 a 40 anos e pertence a categoria adulta.
-
-**Figura 7** - Gráfico de frequência da terceira classe.
-
-![Gráfico de frequência da terceira classe.](imgs/g13-hist-age-third-class.png)
+![Gráfico de contagem de passageiros por classe e gênero.](imgs/g4-count-passengers-class.png)
 
 **tabela 2** - Passageiros por classe, total de indivíduos por sexo e sobreviventes da categoria.
 
@@ -150,10 +144,6 @@ No segundo e terceiro gráficos de frequência, Figuras 6 e 7, observam-se assim
 | 3               | male   | 347   | 47       |
 
 A *Tabela 2* mostra que existe mais homens e mulheres na terceira classe, como observado anteriormente nas *Figuras 2 e 8*. A maioria dos sobreviventes são do gênero feminino, *Tabela 4*, sendo que a primeira e segunda classe quase todas as passageiras sobreviveram. Esses dados podem ser reafirmados pela *Figura 8*, que mostra a contagem de passageiros a bordo, com uma discrepância de passageiros do gênero masculino na terceira classe.
-
-**Figura 8** - Gráfico de contagem de passageiros por classe e gênero.
-
-![Gráfico de contagem de passageiros por classe e gênero.](imgs/g4-count-passengers-class.png)
 
 **Tabela 3** - Contagem de passageiros por classe e sobreviventes.
 
