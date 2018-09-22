@@ -1,11 +1,11 @@
-survived,passenger_class,name,sex,age,sibsp,parch,ticket,fare,embarked,age_category,freq
-0,2,"Hood, Mr. Ambrose Jr",male,21.0,0,0,S.O.C. 14879,73.5,S,Adulto,5
-0,2,"Hickman, Mr. Stanley George",male,21.0,2,0,S.O.C. 14879,73.5,S,Adulto,5
-0,2,"Davies, Mr. Charles Henry",male,18.0,0,0,S.O.C. 14879,73.5,S,Adolescente,5
-0,2,"Hickman, Mr. Leonard Mark",male,24.0,2,0,S.O.C. 14879,73.5,S,Adulto,5
-0,2,"Hickman, Mr. Lewis",male,32.0,2,0,S.O.C. 14879,73.5,S,Adulto,5
-1,2,"Laroche, Miss. Simonne Marie Anne Andree",female,3.0,1,2,SC/Paris 2123,41.5792,C,Criança,3
-1,2,"Laroche, Mrs. Joseph (Juliette Marie Louise Lafargue)",female,22.0,1,2,SC/Paris 2123,41.5792,C,Adulto,3
-0,2,"Laroche, Mr. Joseph Philippe Lemercier",male,25.0,1,2,SC/Paris 2123,41.5792,C,Adulto,3
-0,2,"Hart, Mr. Benjamin",male,43.0,1,1,F.C.C. 13529,26.25,S,Adulto,3
-1,2,"Hart, Mrs. Benjamin (Esther Ada Bloomfield)",female,45.0,1,1,F.C.C. 13529,26.25,S,Adulto,3
+survived,passenger_class,name,sex,age,sibsp,parch,ticket,fare,embarked,freq,age_category
+0,3,"Sage, Master. Thomas Henry",male,38,8,2,CA. 2343,69.55,S,7,Adulto
+0,3,"Sage, Miss. Constance Gladys",female,38,8,2,CA. 2343,69.55,S,7,Adulto
+0,3,"Sage, Mr. Frederick",male,38,8,2,CA. 2343,69.55,S,7,Adulto
+0,3,"Sage, Mr. George John Jr",male,38,8,2,CA. 2343,69.55,S,7,Adulto
+0,3,"Sage, Miss. Stella Anna",female,38,8,2,CA. 2343,69.55,S,7,Adulto
+0,3,"Sage, Mr. Douglas Bullen",male,38,8,2,CA. 2343,69.55,S,7,Adulto
+0,3,"Sage, Miss. Dorothy Edith ""Dolly""",female,38,8,2,CA. 2343,69.55,S,7,Adulto
+0,3,"Andersson, Mr. Anders Johan",male,39,1,5,347082,31.275,S,7,Adulto
+0,3,"Andersson, Miss. Ellis Anna Maria",female,2,4,2,347082,31.275,S,7,Criança
+0,3,"Andersson, Miss. Ingeborg Constanzia",female,9,4,2,347082,31.275,S,7,Criança

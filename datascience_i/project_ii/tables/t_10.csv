@@ -1,11 +1,11 @@
-survived,passenger_class,name,sex,age,sibsp,parch,ticket,fare,embarked,age_category,freq
-1,1,"Bidois, Miss. Rosalie",female,42.0,0,0,PC 17757,227.525,C,Adulto,4
-0,1,"Robbins, Mr. Victor",male,38.233440860215055,0,0,PC 17757,227.525,C,Adulto,4
-1,1,"Astor, Mrs. John Jacob (Madeleine Talmadge Force)",female,18.0,1,0,PC 17757,227.525,C,Adolescente,4
-1,1,"Endres, Miss. Caroline Louise",female,38.0,0,0,PC 17757,227.525,C,Adulto,4
-0,1,"Fortune, Mr. Charles Alexander",male,19.0,3,2,19950,263.0,S,Adulto,4
-1,1,"Fortune, Miss. Mabel Helen",female,23.0,3,2,19950,263.0,S,Adulto,4
-1,1,"Fortune, Miss. Alice Elizabeth",female,24.0,3,2,19950,263.0,S,Adulto,4
-0,1,"Fortune, Mr. Mark",male,64.0,1,4,19950,263.0,S,Adulto,4
-1,1,"Fleming, Miss. Margaret",female,38.233440860215055,0,0,17421,110.8833,C,Adulto,4
-1,1,"Thayer, Mr. John Borland Jr",male,17.0,0,2,17421,110.8833,C,Adolescente,4
+survived,passenger_class,name,sex,age,sibsp,parch,ticket,fare,embarked,freq,age_category
+0,2,"Hood, Mr. Ambrose Jr",male,21,0,0,S.O.C. 14879,73.5,S,5,Adulto
+0,2,"Hickman, Mr. Stanley George",male,21,2,0,S.O.C. 14879,73.5,S,5,Adulto
+0,2,"Davies, Mr. Charles Henry",male,18,0,0,S.O.C. 14879,73.5,S,5,Adolescente
+0,2,"Hickman, Mr. Leonard Mark",male,24,2,0,S.O.C. 14879,73.5,S,5,Adulto
+0,2,"Hickman, Mr. Lewis",male,32,2,0,S.O.C. 14879,73.5,S,5,Adulto
+1,2,"Laroche, Miss. Simonne Marie Anne Andree",female,3,1,2,SC/Paris 2123,41.5792,C,3,Criança
+1,2,"Laroche, Mrs. Joseph (Juliette Marie Louise Lafargue)",female,22,1,2,SC/Paris 2123,41.5792,C,3,Adulto
+0,2,"Laroche, Mr. Joseph Philippe Lemercier",male,25,1,2,SC/Paris 2123,41.5792,C,3,Adulto
+0,2,"Hart, Mr. Benjamin",male,43,1,1,F.C.C. 13529,26.25,S,3,Adulto
+1,2,"Hart, Mrs. Benjamin (Esther Ada Bloomfield)",female,45,1,1,F.C.C. 13529,26.25,S,3,Adulto

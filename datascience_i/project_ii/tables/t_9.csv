@@ -1,10 +1,11 @@
-passenger_class,embarked,fare_mean,total
-1,C,104.71852941176469,85
-1,Q,90.0,2
-1,S,70.36486220472443,127
-2,C,25.358335294117644,17
-2,Q,12.35,3
-2,S,20.327439024390245,164
-3,C,11.214083333333337,66
-3,Q,11.183393055555557,72
-3,S,14.64408300283288,353
+survived,passenger_class,name,sex,age,sibsp,parch,ticket,fare,embarked,freq,age_category
+1,1,"Bidois, Miss. Rosalie",female,42,0,0,PC 17757,227.525,C,4,Adulto
+0,1,"Robbins, Mr. Victor",male,38,0,0,PC 17757,227.525,C,4,Adulto
+1,1,"Astor, Mrs. John Jacob (Madeleine Talmadge Force)",female,18,1,0,PC 17757,227.525,C,4,Adolescente
+1,1,"Endres, Miss. Caroline Louise",female,38,0,0,PC 17757,227.525,C,4,Adulto
+0,1,"Fortune, Mr. Charles Alexander",male,19,3,2,19950,263.0,S,4,Adulto
+1,1,"Fortune, Miss. Mabel Helen",female,23,3,2,19950,263.0,S,4,Adulto
+1,1,"Fortune, Miss. Alice Elizabeth",female,24,3,2,19950,263.0,S,4,Adulto
+0,1,"Fortune, Mr. Mark",male,64,1,4,19950,263.0,S,4,Adulto
+1,1,"Fleming, Miss. Margaret",female,38,0,0,17421,110.8833,C,4,Adulto
+1,1,"Thayer, Mr. John Borland Jr",male,17,0,2,17421,110.8833,C,4,Adolescente
