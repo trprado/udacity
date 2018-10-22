@@ -134,7 +134,7 @@ FROM purchases AS pur
 JOIN max_pur AS mpur
 ON mpur.Country = pur.Country
 AND mpur.max_pur = pur.Purchases
-ORDER BY pur.Country
+ORDER BY pur.Country;
 
 -- 8.
 WITH music_avg_time AS (
@@ -149,7 +149,7 @@ SELECT
 FROM Track
 JOIN music_avg_time
 WHERE Milliseconds > avg_time
-ORDER BY 2 DESC
+ORDER BY 2 DESC;
 
 -- 9.
 WITH total_spend AS (
@@ -181,4 +181,4 @@ FROM total_spend AS ts
 JOIN max_spend AS ms
 ON ts.Country = ms.Country
 AND ts.TotalSpend = ms.max_spend
-ORDER BY 1
+ORDER BY 1;
