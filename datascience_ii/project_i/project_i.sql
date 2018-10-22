@@ -26,7 +26,7 @@ SELECT
 FROM Customer AS cus
 JOIN Invoice as inv
 ON inv.CustomerId == cus.CustomerId
-GROUP BY 2
+GROUP BY 1
 ORDER BY 3 DESC
 LIMIT 1;
 
@@ -59,7 +59,7 @@ SELECT
 FROM Artist AS art
 JOIN Album AS alb
 ON alb.ArtistId = art.ArtistID
-JOIN Track as tr
+JOIN Track AS tr
 ON tr.AlbumId = alb.AlbumId
 JOIN Genre AS gen
 ON tr.GenreId = gen.GenreId
@@ -168,10 +168,9 @@ AND mpur.max_pur = pur.Purchases
 ORDER BY pur.Country;
 
 -- 8.
--- Pergunta 2: Retorne todos os nomes de músicas que possuem um comprimento de canção maior que o comprimento médio de canção. Embora você possa fazer isso com duas consultas. Imagine que você queira que sua consulta atualize com base em onde os dados são colocados no banco de dados. Portanto, você não quer fazer um hard code da média na sua consulta. Você só precisa da tabela Track (música) para completar essa consulta.
-WITH music_avg_time AS (
+-- Pergunta 2: Retorne todos os nomes de músicas que possuem um comprimento de canção maior que o comprimento médio de canção.
     SELECT
-        AVG(Milliseconds) as avg_time
+        AVG(Milliseconds) AS avg_time
     FROM Track
 )
 
