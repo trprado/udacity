@@ -120,5 +120,7 @@ dmypy.json
 **/plt
 **/csv
 
+
 # csv files
 # **/*.csv
+!**/csv/
