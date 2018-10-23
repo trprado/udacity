@@ -1,4 +1,4 @@
--- 1. 
+-- 1.
 -- Pergunta 1: Quais países possuem mais faturas?
 SELECT
     BillingCountry,
