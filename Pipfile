@@ -7,17 +7,21 @@ name = "pypi"
 numpy = "*"
 scipy = "*"
 matplotlib = "*"
-jupyter = "*"
 pandas = "*"
 sympy = "*"
 nose = "*"
 seaborn = "*"
-notebook = "*"
+tweepy = "*"
+toml = "*"
 
 [dev-packages]
 pylint = "<2.0.0"
 ipython = "*"
+jupyter = "*"
+notebook = "*"
+jupyterlab = "*"
 rope = "*"
+"autopep8" = "*"
 
 [requires]
 python_version = "3.6"
