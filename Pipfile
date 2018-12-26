@@ -13,6 +13,7 @@ nose = "*"
 seaborn = "*"
 tweepy = "*"
 toml = "*"
+requests = "*"
 
 [dev-packages]
 pylint = "<2.0.0"
@@ -22,6 +23,7 @@ notebook = "*"
 jupyterlab = "*"
 rope = "*"
 "autopep8" = "*"
+jupyterlab-discovery = "*"
 
 [requires]
 python_version = "3.6"
