@@ -14,6 +14,7 @@ seaborn = "*"
 tweepy = "*"
 toml = "*"
 requests = "*"
+statsmodels = "*"
 
 [dev-packages]
 pylint = "<2.0.0"
