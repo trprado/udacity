@@ -1,0 +1,3 @@
+[submodule "datascience_ii/mini_projects"]
+	path = datascience_ii/mini_projects
+	url = https://github.com/trprado/ud120-projects.git
