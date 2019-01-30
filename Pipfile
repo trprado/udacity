@@ -26,6 +26,8 @@ jupyterlab = "*"
 rope = "*"
 "autopep8" = "*"
 jupyterlab-discovery = "*"
+jupyterthemes = "*"
+jupyter-nbextensions-configurator = "*"
 
 [requires]
 python_version = "3.6"
