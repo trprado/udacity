@@ -16,6 +16,7 @@ toml = "*"
 requests = "*"
 statsmodels = "*"
 plotly = "*"
+scikit-learn = "*"
 
 [dev-packages]
 pylint = "<2.0.0"
