@@ -17,6 +17,7 @@ requests = "*"
 statsmodels = "*"
 plotly = "*"
 scikit-learn = "*"
+nltk = "*"
 
 [dev-packages]
 pylint = "<2.0.0"
