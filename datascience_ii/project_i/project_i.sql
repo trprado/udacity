@@ -193,6 +193,7 @@ ORDER BY pur.Country;
 
 -- 8.
 -- Pergunta 2: Retorne as 10 nomes de músicas que possuem um comprimento de canção maior que o comprimento médio de canção.
+WITH music_avg_time AS (
     SELECT
         AVG(Milliseconds) AS avg_time
     FROM Track
