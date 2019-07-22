@@ -13460,7 +13460,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Resposta:</strong> mercado, café e padaria</p>
+<p><strong>Resposta:</strong> Amostra 1 - mercado cujo estabelecimento deve conter grandes quantidades de itens variados, possui as maiores quantidades de itens em <em>Fresh</em>, <em>Milk</em>, <em>Grocery</em>, <em>Detergents_Paper</em> e <em>Delicatessen</em> e poucos em <em>Frozen</em>. Amostra 2 - café cujo estabelecimento possui variedades de itens mais restritos, ou seja, em maiores quantidades de alguns itens do que os demais devido ao serviço prestado ser mais específico que os demais aqui citados (mercado e padaria), possui grandes quantidades de itens em <em>Fresh</em>, <em>Frozen</em> e <em>Milk</em>, quantidade significante em <em>Delicatessen</em> e poucas em <em>Grocery</em> e <em>Detergents_Paper</em>. Amostra 3 - padaria cujo estabelecimento possui itens em quantidade intermediária entre um mercado e um café, foi escolhido por apresentar grande quantidade de <em>Fresh</em>, quantidades significantes de <em>Milk</em>, <em>Grocery</em>, <em>Frozen</em> e <em>Delicatessen</em> e pouca quantidade de <em>Detergents_Paper</em>.</p>
 
 </div>
 </div>
@@ -13544,7 +13544,7 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Resposta:</strong> O atributo foi <em>Detergents_Paper</em> e sua pontuação foi de 0.2716. O atributo se mostrou de pouca importância para identificar hábitos de compra devido a ser o único que não é relacionado a alimentos em geral.</p>
+<p><strong>Resposta:</strong> O atributo previsto no modelo foi <em>Detergents_Paper</em> com o coeficiente de determinação de apenas 27,16% o que revela que as variáveis explicativas para a modelagem (<em>Fresh</em>, <em>Milk</em>, <em>Grocery</em>, <em>Frozen</em> e <em>Delicatessen</em>) pouco explicam a variável resposta, portanto deve-se manter a variável <em>Detergents_Paper</em> nas análises.</p>
 
 </div>
 </div>
@@ -15438,7 +15438,15 @@ Para dois ou mais atributos foram identificados os seguintes índices de dedados
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Resposta:</strong></p>
-<p>Pela primeira 0.4424 e segunda 0.2766 dando um total de 0.719 no caso é explicado no total por essas duas componentes 71,9% da variância. Já as quatro primeiras componentes explicam um total de 0.9314 da variância do modelo. As duas primeiras já explicam a maior variabilidade das despesas dos clientes. Embora as duas primeiras componentes principais representem a maior parte da variância explicada, analisando pelos autovalores das componentes principais observa-se que as quatro primeiras apresentam valores maiores que 1 "<a href="https://support.minitab.com/en-us/minitab/18/help-and-how-to/modeling-statistics/multivariate/how-to/principal-components/interpret-the-results/key-results/">Critério de Kaiser</a>".</p>
+<p>A primeira componente principal (0.4424), a segunda componente (0.2766) explicam juntas 71,9% do total da variância explicada. Somadas, as primeiras quatro componentes principais explicam o total de 93,14% da variância do modelo. As interpretações paras as quatro componentes principais, baseadas acima do limite no nível 60% de correlação são:</p>
+<ul>
+<li>Primera componente: correlação negativa de <em>Detergents_Paper</em> em relação ao hábito de compras, pode ser explicado como comprar grandes quantidades de <em>Detergents_Paper</em> é menos provável que as demais variáveis.</li>
+<li>Segunda componente: correlação negativa de <em>Fresh</em> em relação ao hábito de compras, pode ser explicado como o cliente que possui o hábito de comprar grandes quantidades de <em>Fresh</em> compre quantidades menores dos demais.</li>
+<li>Terceira componente: correlação negativa de <em>Fresh</em> e correlação positiva de <em>Delicatessen</em> em relação ao hábito de compras, pode ser explicado como compradores que habitualmente compram mais <em>Delicatessen</em> acabam comprando menos de produtos <em>Fresh</em>.</li>
+<li>Quarta componente: correlação positiva de <em>Frozen</em> em relação ao hábito de compras, pode ser explicado ao hábito de se comprar grandes quantidades de <em>Frozen</em> acabam comprando menos quantidades de <em>Delicatessen</em>.</li>
+</ul>
+<p>Embora as duas primeiras componentes principais representem a maior parte da variância explicada, analisando pelos autovalores das componentes principais observa-se que as quatro primeiras apresentam valores maiores que 1 "<a href="https://support.minitab.com/en-us/minitab/18/help-and-how-to/modeling-statistics/multivariate/how-to/principal-components/interpret-the-results/key-results/">Critério de Kaiser</a>".
+Referências: <a href="https://onlinecourses.science.psu.edu/stat505/lesson/11/11.4">Interpretation of the Principal Components</a> e <a href="http://matthewdeakos.me/wp-content/uploads/2018/02/PCAWalkthrough-1.html">Notebook</a>.</p>
 
 </div>
 </div>
@@ -16812,9 +16820,9 @@ Para duas componentes a pontuação foi de 0.4098, para três foi de 0.4105 para
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Resposta:</strong></p>
 <ul>
-<li>Segmento 0: Mercado</li>
-<li>Segmento 1: Café</li>
-<li>Segmento 2: Padaria</li>
+<li>Segmento 0: Mercado, visto que possui as maiores quantidades de itens em <em>Milk</em>, <em>Grocery</em>, <em>Detergents_Paper</em> e poucos em <em>Frozen</em>. </li>
+<li>Segmento 1: Café, visto que possui maior quantidades de itens em <em>Grocery</em> do que os demais.</li>
+<li>Segmento 2: Padaria, visto que possui grande quantidade de <em>Fresh</em> que os demais.</li>
 </ul>
 
 </div>
@@ -16872,7 +16880,7 @@ Para duas componentes a pontuação foi de 0.4098, para três foi de 0.4105 para
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Resposta:</strong>
-Para o segmento 0 (mercado), foram agrupados 164 clientes, para o segmento 1 (café) foram agrupados 38 clientes e para o segmento 2 foram agrupados 238 clientes. Esses valores são esperados, portanto pode-se concluir que as previsões para cada amostra de ponto são consistentes com os agrupamentos, já que espera-se que haja mais padarias, que mercados e cafés.</p>
+Para o segmento 0 (mercado), foram agrupados 164 clientes devido a conterem uma maior quantidade nos produtos variados. Para o segmento 1 (café) foram agrupados 38 clientes pois possuem grandes quantidades de <em>Grocery</em> do que os demais. Para o segmento 2 foram agrupados 238 clientes como valores maiores em <em>Fresh</em> do que os demais. Esses valores são esperados, portanto pode-se concluir que as previsões para cada amostra de ponto são consistentes com os agrupamentos, já que espera-se que haja mais padarias, que mercados e cafés.</p>
 
 </div>
 </div>
